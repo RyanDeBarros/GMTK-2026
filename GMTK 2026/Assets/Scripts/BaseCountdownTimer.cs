@@ -3,23 +3,28 @@ using UnityEngine;
 
 public class BaseCountdownTimer : MonoBehaviour
 {
+    private static BaseCountdownTimer instance;
+    public static BaseCountdownTimer Instance => instance;
+
+    public static readonly float slowBPM = 35f;
     public static readonly float normalBPM = 70f;
     public static readonly float fastBPM = 140f;
 
     private enum BPMRate
     {
+        Slow,
         Normal,
         Fast
     }
 
-    private CountdownValue countdownValue = CountdownValue.Zero;
+    private readonly ModifiableValue<CountdownValue> countdownValue = new();
     private float timerDebt = 0f;
 
     public class Settings
     {
         public bool fractions = false;
         public bool reverse = false;
-        public int bpmIndex = 0;
+        public int bpmIndex = (int)BPMRate.Normal;
     }
 
     private readonly Settings settings = new();
@@ -28,6 +33,9 @@ public class BaseCountdownTimer : MonoBehaviour
 
     void Start()
     {
+        countdownValue.Value = CountdownValue.Zero;
+        countdownValue.Consume();
+
         // TODO setup timer effect generator parameters
         timerEffectQueue.generators.Add(new SpeedUpTimerEffectGenerator());
         timerEffectQueue.generators.Add(new SlowDownTimerEffectGenerator());
@@ -41,32 +49,52 @@ public class BaseCountdownTimer : MonoBehaviour
     void Update()
     {
         timerDebt += Time.deltaTime * CurrentBPM() / 60f;
-        bool changed = false;
         while (timerDebt >= 1f)
         {
             --timerDebt;
-            CountdownValue oldCountdownValue = countdownValue;
-            countdownValue = CountdownValueUtil.Next(countdownValue, settings.fractions, settings.reverse);
-            changed |= oldCountdownValue != countdownValue;
+            countdownValue.Value = CountdownValueUtil.Next(countdownValue.Value, settings.fractions, settings.reverse);
         }
 
-        if (changed)
-            OnCountdownValueChanged();
+        if (countdownValue.Modified())
+        {
+            timerEffectQueue.OnCountdownChanged();
+
+            // TODO sfx
+
+            if (countdownValue.Value == CountdownValue.Zero)
+                timerEffectQueue.Deactivate();
+
+            // TODO update game state when value reaches 0
+        }
+
+        countdownValue.Consume();
+
+        CountdownDisplay.Instance.SetCountdownValue(countdownValue.Value);
+    }
+
+    private void OnEnable()
+    {
+        instance = this;
+    }
+
+    private void OnDisable()
+    {
+        instance = null;
     }
 
     public void Restart()
     {
         timerDebt = 0f;
-        countdownValue = CountdownValue.Ten;
-        timerEffectQueue.Deactivate(this);
-        timerEffectQueue.Activate(this);
-        OnCountdownValueChanged();
+        countdownValue.Value = CountdownValue.Ten;
+        countdownValue.Consume();
+        timerEffectQueue.Deactivate();
+        timerEffectQueue.Activate();
     }
 
     public void NewPass()
     {
-        timerEffectQueue.Deactivate(this);
-        timerEffectQueue.Activate(this);
+        timerEffectQueue.Deactivate();
+        timerEffectQueue.Activate();
     }
 
     public void SpeedUp()
@@ -91,24 +119,11 @@ public class BaseCountdownTimer : MonoBehaviour
 
     public float CurrentBPM()
     {
-        return ((BPMRate)Math.Clamp(settings.bpmIndex, (int)BPMRate.Normal, (int)BPMRate.Fast)) switch {
+        return ((BPMRate)Math.Clamp(settings.bpmIndex, (int)BPMRate.Slow, (int)BPMRate.Fast)) switch {
+            BPMRate.Slow => slowBPM,
             BPMRate.Normal => normalBPM,
             BPMRate.Fast => fastBPM,
             _ => throw new NotImplementedException()
         };
-    }
-
-    private void OnCountdownValueChanged()
-    {
-        if (!timerEffectQueue.OnCountdownChanged(this))
-        {
-            CountdownDisplay.Instance.SetCountdownValue(countdownValue);
-            // TODO sfx
-
-            if (countdownValue == CountdownValue.Zero)
-                timerEffectQueue.Deactivate(this);
-
-            // TODO update game state when value reaches 0
-        }
     }
 }

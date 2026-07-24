@@ -2,20 +2,19 @@ using UnityEngine;
 
 public class ReverseTimerEffect : TimerEffect
 {
-    public override void Activate(BaseCountdownTimer timer)
+    public override void Activate()
     {
         // TODO
     }
 
-    public override void Deactivate(BaseCountdownTimer timer)
+    public override void Deactivate()
     {
         // TODO
     }
 
-    public override bool OnCountdownChanged(BaseCountdownTimer timer)
+    public override void OnCountdownChanged()
     {
         // TODO
-        return false;
     }
 }
 

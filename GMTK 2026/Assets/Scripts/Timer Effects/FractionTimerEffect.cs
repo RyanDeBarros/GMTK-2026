@@ -2,19 +2,19 @@ using UnityEngine;
 
 public class FractionTimerEffect : TimerEffect
 {
-    public override void Activate(BaseCountdownTimer timer)
+    public override void Activate()
     {
-        timer.SetFractions(true);
+        BaseCountdownTimer.Instance.SetFractions(true);
     }
 
-    public override void Deactivate(BaseCountdownTimer timer)
+    public override void Deactivate()
     {
-        timer.SetFractions(false);
+		BaseCountdownTimer.Instance.SetFractions(false);
     }
 
-    public override bool OnCountdownChanged(BaseCountdownTimer timer)
+    public override void OnCountdownChanged()
     {
-        return false;
+        // NOP
     }
 }
 

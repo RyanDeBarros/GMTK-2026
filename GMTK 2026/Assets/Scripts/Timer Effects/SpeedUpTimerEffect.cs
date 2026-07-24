@@ -2,20 +2,19 @@ using UnityEngine;
 
 public class SpeedUpTimerEffect : TimerEffect
 {
-    public override void Activate(BaseCountdownTimer timer)
+    public override void Activate()
     {
         // TODO
     }
 
-    public override void Deactivate(BaseCountdownTimer timer)
+    public override void Deactivate()
     {
         // TODO
     }
 
-    public override bool OnCountdownChanged(BaseCountdownTimer timer)
+    public override void OnCountdownChanged()
     {
         // TODO
-        return false;
     }
 }
 

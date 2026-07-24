@@ -2,9 +2,9 @@ using System.Collections.Generic;
 
 public abstract class TimerEffect
 {
-    public abstract void Activate(BaseCountdownTimer timer);
-    public abstract void Deactivate(BaseCountdownTimer timer);
-    public abstract bool OnCountdownChanged(BaseCountdownTimer timer);
+    public abstract void Activate();
+    public abstract void Deactivate();
+    public abstract void OnCountdownChanged();
 }
 
 public abstract class TimerEffectGenerator
@@ -19,28 +19,26 @@ public class TimerEffectQueue
 
     private readonly List<TimerEffect> effects = new();
 
-    public void Activate(BaseCountdownTimer timer)
+    public void Activate()
     {
         generators.ForEach(g => {
             if (g.ShouldGenerate())
             {
                 TimerEffect e = g.Generate();
-                e.Activate(timer);
+                e.Activate();
                 effects.Add(e);
             }
         });
     }
 
-    public void Deactivate(BaseCountdownTimer timer)
+    public void Deactivate()
     {
-        effects.ForEach(e => e.Deactivate(timer));
+        effects.ForEach(e => e.Deactivate());
         effects.Clear();
     }
 
-    public bool OnCountdownChanged(BaseCountdownTimer timer)
+    public void OnCountdownChanged()
     {
-        bool anyChanged = false;
-        effects.ForEach(e => anyChanged |= e.OnCountdownChanged(timer));
-        return anyChanged;
+        effects.ForEach(e => e.OnCountdownChanged());
     }
 }
