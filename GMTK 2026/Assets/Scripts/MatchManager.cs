@@ -14,7 +14,8 @@ public class MatchManager : MonoBehaviour
     private static MatchManager instance;
     public static MatchManager Instance => instance;
 
-    public MatchPhase phase = MatchPhase.Intro;
+    private MatchPhase phase = MatchPhase.Intro;
+    public MatchPhase Phase => phase;
 
     private void Awake()
     {
@@ -37,5 +38,12 @@ public class MatchManager : MonoBehaviour
     {
         Assert.IsTrue(instance == this);
         instance = null;
+    }
+
+    public void SetPhase(MatchPhase phase)
+    {
+        this.phase = phase;
+
+        CountdownDisplay.Instance.enabled = phase == MatchPhase.Countdown || phase == MatchPhase.Slomo;
     }
 }

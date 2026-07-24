@@ -52,7 +52,7 @@ public class BaseCountdownTimer : MonoBehaviour
 
     void Update()
     {
-        if (MatchManager.Instance.phase != MatchPhase.Countdown)
+        if (MatchManager.Instance.Phase != MatchPhase.Countdown)
             return;
 
         if (newPass)
@@ -78,7 +78,7 @@ public class BaseCountdownTimer : MonoBehaviour
             if (GetCountdownValue() == CountdownValue.Zero)
             {
                 timerEffectQueue.Deactivate();
-                MatchManager.Instance.phase = MatchPhase.Slomo;
+                MatchManager.Instance.SetPhase(MatchPhase.Slomo);
             }
         }
 
