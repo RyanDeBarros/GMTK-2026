@@ -12,9 +12,9 @@ public class FractionTimerEffect : TimerEffect
         timer.SetFractions(false);
     }
 
-    public override void OnCountdownChanged(BaseCountdownTimer timer)
+    public override bool OnCountdownChanged(BaseCountdownTimer timer)
     {
-        // NOP
+        return false;
     }
 }
 

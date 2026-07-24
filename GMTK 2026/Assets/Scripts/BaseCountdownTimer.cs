@@ -100,13 +100,15 @@ public class BaseCountdownTimer : MonoBehaviour
 
     private void OnCountdownValueChanged()
     {
-        CountdownDisplay.Instance.SetCountdownValue(countdownValue);
-        // TODO sfx
+        if (!timerEffectQueue.OnCountdownChanged(this))
+        {
+            CountdownDisplay.Instance.SetCountdownValue(countdownValue);
+            // TODO sfx
 
-        timerEffectQueue.OnCountdownChanged(this);
-        if (countdownValue == CountdownValue.Zero)
-            timerEffectQueue.Deactivate(this);
+            if (countdownValue == CountdownValue.Zero)
+                timerEffectQueue.Deactivate(this);
 
-        // TODO update game state when value reaches 0
+            // TODO update game state when value reaches 0
+        }
     }
 }

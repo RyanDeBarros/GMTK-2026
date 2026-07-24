@@ -12,9 +12,10 @@ public class ReverseTimerEffect : TimerEffect
         // TODO
     }
 
-    public override void OnCountdownChanged(BaseCountdownTimer timer)
+    public override bool OnCountdownChanged(BaseCountdownTimer timer)
     {
         // TODO
+        return false;
     }
 }
 

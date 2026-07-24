@@ -4,7 +4,7 @@ public abstract class TimerEffect
 {
     public abstract void Activate(BaseCountdownTimer timer);
     public abstract void Deactivate(BaseCountdownTimer timer);
-    public abstract void OnCountdownChanged(BaseCountdownTimer timer);
+    public abstract bool OnCountdownChanged(BaseCountdownTimer timer);
 }
 
 public abstract class TimerEffectGenerator
@@ -37,8 +37,10 @@ public class TimerEffectQueue
         effects.Clear();
     }
 
-    public void OnCountdownChanged(BaseCountdownTimer timer)
+    public bool OnCountdownChanged(BaseCountdownTimer timer)
     {
-        effects.ForEach(e => e.OnCountdownChanged(timer));
+        bool anyChanged = false;
+        effects.ForEach(e => anyChanged |= e.OnCountdownChanged(timer));
+        return anyChanged;
     }
 }
