@@ -1,0 +1,135 @@
+{
+    "version": 1,
+    "name": "InputMapping",
+    "maps": [
+        {
+            "name": "Default",
+            "id": "3ac97f77-a1e0-4893-8f36-2a23e9280c2d",
+            "actions": [
+                {
+                    "name": "P1 Shoot",
+                    "type": "Button",
+                    "id": "0f0afa42-1691-4a0f-9d07-295b28e0ae4d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "P1 Reload",
+                    "type": "Button",
+                    "id": "9edff2c9-c926-4d87-904c-74dfc88889cf",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "P1 Dodge",
+                    "type": "Button",
+                    "id": "62d957fb-3e0f-4b0b-8c4c-a88d91c6a3db",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "P2 Shoot",
+                    "type": "Button",
+                    "id": "059ca080-8aff-4382-93f8-a94386f66220",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "P2 Reload",
+                    "type": "Button",
+                    "id": "94ad0acb-0047-455b-90cc-d8b368903876",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "P2 Dodge",
+                    "type": "Button",
+                    "id": "34aa243f-8dfd-4ae0-affe-cacdba09bf35",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "850bb1ec-c443-4602-9e83-2b08125b0725",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "P1 Shoot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "21800931-aff1-4cd5-844a-144421c46cc7",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "P1 Reload",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bf126010-aad9-45a0-8aaf-5160cfac8c5d",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "P1 Dodge",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d4cc2903-c526-4d38-8510-32a175499ca0",
+                    "path": "<Keyboard>/j",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "P2 Shoot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "24e20d98-59fe-4a89-81ad-1f19404fff29",
+                    "path": "<Keyboard>/k",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "P2 Reload",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "691a7f88-75c3-41f9-a6e2-b8716d5cda80",
+                    "path": "<Keyboard>/l",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "P2 Dodge",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
