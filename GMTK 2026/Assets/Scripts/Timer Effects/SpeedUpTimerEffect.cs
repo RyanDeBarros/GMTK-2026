@@ -24,11 +24,9 @@ public class SpeedUpTimerEffectGenerator : TimerEffectGenerator
 
     public override TimerEffect Generate()
     {
-        return new SpeedUpTimerEffect();
-    }
-
-    public override bool ShouldGenerate()
-    {
-        return Random.value < probability;
+        if (Random.value < probability)
+            return new SpeedUpTimerEffect();
+        else
+            return null;
     }
 }

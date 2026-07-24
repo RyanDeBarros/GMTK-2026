@@ -24,11 +24,9 @@ public class FakeoutTimerEffectGenerator : TimerEffectGenerator
 
     public override TimerEffect Generate()
     {
-        return new FakeoutTimerEffect();
-    }
-
-    public override bool ShouldGenerate()
-    {
-        return Random.value < probability;
+        if (Random.value < probability)
+            return new FakeoutTimerEffect();
+        else
+            return null;
     }
 }

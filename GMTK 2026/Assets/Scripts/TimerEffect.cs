@@ -9,7 +9,6 @@ public abstract class TimerEffect
 
 public abstract class TimerEffectGenerator
 {
-    public abstract bool ShouldGenerate();
     public abstract TimerEffect Generate();
 }
 
@@ -22,9 +21,9 @@ public class TimerEffectQueue
     public void Activate()
     {
         generators.ForEach(g => {
-            if (g.ShouldGenerate())
+            TimerEffect e = g.Generate();
+            if (e != null)
             {
-                TimerEffect e = g.Generate();
                 e.Activate();
                 effects.Add(e);
             }

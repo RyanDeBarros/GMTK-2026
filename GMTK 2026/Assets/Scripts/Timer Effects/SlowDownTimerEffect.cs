@@ -24,11 +24,9 @@ public class SlowDownTimerEffectGenerator : TimerEffectGenerator
 
     public override TimerEffect Generate()
     {
-        return new SlowDownTimerEffect();
-    }
-
-    public override bool ShouldGenerate()
-    {
-        return Random.value < probability;
+        if (Random.value < probability)
+            return new SlowDownTimerEffect();
+        else
+            return null;
     }
 }
