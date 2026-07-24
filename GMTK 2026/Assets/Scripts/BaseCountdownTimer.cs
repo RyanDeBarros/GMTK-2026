@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class BaseCountdownTimer : MonoBehaviour
 {
@@ -34,6 +35,11 @@ public class BaseCountdownTimer : MonoBehaviour
 
     [SerializeField] private TextAsset timerEffectParameters;
 
+    void Awake()
+    {
+        Assert.IsNull(instance);
+    }
+
     void Start()
     {
         TimerEffectConfigLoader.Load(timerEffectParameters).Configure(timerEffectQueue);
@@ -46,6 +52,9 @@ public class BaseCountdownTimer : MonoBehaviour
 
     void Update()
     {
+        if (MatchManager.Instance.phase != MatchPhase.Countdown)
+            return;
+
         if (newPass)
         {
             newPass = false;
@@ -69,7 +78,7 @@ public class BaseCountdownTimer : MonoBehaviour
             if (GetCountdownValue() == CountdownValue.Zero)
             {
                 timerEffectQueue.Deactivate();
-                // TODO update game state when value reaches 0
+                MatchManager.Instance.phase = MatchPhase.Slomo;
             }
         }
 
@@ -80,11 +89,13 @@ public class BaseCountdownTimer : MonoBehaviour
 
     private void OnEnable()
     {
+        Assert.IsNull(instance);
         instance = this;
     }
 
     private void OnDisable()
     {
+        Assert.IsTrue(instance == this);
         instance = null;
     }
 
