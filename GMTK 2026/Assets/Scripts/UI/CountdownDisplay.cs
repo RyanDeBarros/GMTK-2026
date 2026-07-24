@@ -14,17 +14,26 @@ public class CountdownDisplay : MonoBehaviour
 
     private void Awake()
     {
+        Assert.IsNull(instance);
+
         textMesh = GetComponent<TextMeshProUGUI>();
         Assert.IsNotNull(textMesh);
     }
 
+    private void Update()
+    {
+        textMesh.enabled = MatchManager.Instance.Phase == MatchPhase.Countdown || MatchManager.Instance.Phase == MatchPhase.ChooseAction;
+    }
+
     private void OnEnable()
     {
+        Assert.IsNull(instance);
         instance = this;
     }
 
     private void OnDisable()
     {
+        Assert.IsTrue(instance == this);
         instance = null;
     }
 
