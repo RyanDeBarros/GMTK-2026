@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.XR;
 
 public class PlayerInputRouter : MonoBehaviour
 {
@@ -56,6 +55,8 @@ public class PlayerInputRouter : MonoBehaviour
     {
         Assert.IsNotNull(player1);
         Assert.IsNotNull(player2);
+        PlayerController.Player1 = player1;
+        PlayerController.Player2 = player2;
 
         playerInput = GetComponent<PlayerInput>();
         Assert.IsNotNull(playerInput);

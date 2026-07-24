@@ -43,11 +43,6 @@ public class BaseCountdownTimer : MonoBehaviour
     void Start()
     {
         TimerEffectConfigLoader.Load(timerEffectParameters).Configure(timerEffectQueue);
-
-        countdownValue.Value = CountdownValue.Zero;
-        countdownValue.Consume();
-
-        Restart();
     }
 
     void Update()
@@ -78,7 +73,7 @@ public class BaseCountdownTimer : MonoBehaviour
             if (GetCountdownValue() == CountdownValue.Zero)
             {
                 timerEffectQueue.Deactivate();
-                MatchManager.Instance.SetPhase(MatchPhase.Slomo);
+                MatchManager.Instance.SetPhase(MatchPhase.ChooseAction);
             }
         }
 

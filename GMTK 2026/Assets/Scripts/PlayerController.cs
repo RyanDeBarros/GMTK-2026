@@ -1,15 +1,35 @@
 using UnityEngine;
 
+public enum SlomoAction
+{
+    None,
+    Shoot,
+    Reload,
+    Dodge
+}
+
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController Player1;
+    public static PlayerController Player2;
+
     [SerializeField] private int lives = 5;
+
+    private SlomoAction chosenAction = SlomoAction.None;
+    public SlomoAction ChosenAction => chosenAction;
 
     public void Shoot()
     {
-        if (MatchManager.Instance.Phase == MatchPhase.Slomo)
+        if (chosenAction != SlomoAction.None) // TODO also early exit if no ammo
+            return;
+
+        if (MatchManager.Instance.Phase == MatchPhase.ChooseAction)
         {
+            chosenAction = SlomoAction.Shoot;
             Debug.Log(name + ": Shoot");
-            // TODO
+            // TODO shoot bullet
+            // TODO animation
+            // TODO sfx
         }
         else if (MatchManager.Instance.Phase == MatchPhase.Countdown)
             GetHit();
@@ -17,10 +37,16 @@ public class PlayerController : MonoBehaviour
 
     public void Reload()
     {
-        if (MatchManager.Instance.Phase == MatchPhase.Slomo)
+        if (chosenAction != SlomoAction.None) // TODO also early exit if ammo is full
+            return;
+
+        if (MatchManager.Instance.Phase == MatchPhase.ChooseAction)
         {
+            chosenAction = SlomoAction.Reload;
             Debug.Log(name + ": Reload");
-            // TODO
+            // TODO reload ammo
+            // TODO animation
+            // TODO sfx
         }
         else if (MatchManager.Instance.Phase == MatchPhase.Countdown)
             GetHit();
@@ -28,13 +54,23 @@ public class PlayerController : MonoBehaviour
 
     public void Dodge()
     {
-        if (MatchManager.Instance.Phase == MatchPhase.Slomo)
+        if (chosenAction != SlomoAction.None) // TODO also early exit if dodge is on cooldown
+            return;
+
+        if (MatchManager.Instance.Phase == MatchPhase.ChooseAction)
         {
+            chosenAction = SlomoAction.Dodge;
             Debug.Log(name + ": Dodge");
-            // TODO
+            // TODO animation
+            // TODO sfx
         }
         else if (MatchManager.Instance.Phase == MatchPhase.Countdown)
             GetHit();
+    }
+
+    public bool IsDodging()
+    {
+        return chosenAction == SlomoAction.Dodge;
     }
 
     public void GetHit()
@@ -62,5 +98,10 @@ public class PlayerController : MonoBehaviour
     public bool IsDead()
     {
         return lives <= 0;
+    }
+
+    public void StartCountdownPhase()
+    {
+        chosenAction = SlomoAction.None;
     }
 }

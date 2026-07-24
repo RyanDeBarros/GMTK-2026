@@ -1,3 +1,4 @@
+using NUnit.Framework.Constraints;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -5,6 +6,7 @@ public enum MatchPhase
 {
     Intro,
     Countdown,
+    ChooseAction,
     Slomo,
     End
 }
@@ -17,6 +19,11 @@ public class MatchManager : MonoBehaviour
     private MatchPhase phase = MatchPhase.Intro;
     public MatchPhase Phase => phase;
 
+    [SerializeField] private float chooseActionDuration = 0.5f;
+    [SerializeField] private float slomoDuration = 2.5f;
+
+    private float timer = 0f;
+
     private void Awake()
     {
         Assert.IsNull(instance);
@@ -25,7 +32,26 @@ public class MatchManager : MonoBehaviour
     private void Start()
     {
         // TODO intro cutscene first
-        phase = MatchPhase.Countdown;
+        SetPhase(MatchPhase.Countdown);
+    }
+
+    private void Update()
+    {
+        if (phase == MatchPhase.ChooseAction)
+        {
+            timer += Time.deltaTime;
+            if (timer >= chooseActionDuration)
+                SetPhase(MatchPhase.Slomo);
+        }
+        else if (phase == MatchPhase.Slomo)
+        {
+            timer += Time.deltaTime;
+            if (timer >= slomoDuration)
+            {
+                // TODO fade out slomo music track
+                SetPhase(MatchPhase.Countdown);
+            }
+        }
     }
 
     private void OnEnable()
@@ -44,6 +70,20 @@ public class MatchManager : MonoBehaviour
     {
         this.phase = phase;
 
-        CountdownDisplay.Instance.enabled = phase == MatchPhase.Countdown || phase == MatchPhase.Slomo;
+        if (phase == MatchPhase.Countdown)
+        {
+            PlayerController.Player1.StartCountdownPhase();
+            PlayerController.Player2.StartCountdownPhase();
+            BaseCountdownTimer.Instance.Restart();
+        }
+
+        if (phase == MatchPhase.ChooseAction)
+        {
+            // TODO fade in slomo music track
+            timer = 0f;
+        }
+
+        if (phase == MatchPhase.Slomo)
+            timer = 0f;
     }
 }

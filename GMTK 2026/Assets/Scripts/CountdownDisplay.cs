@@ -20,6 +20,11 @@ public class CountdownDisplay : MonoBehaviour
         Assert.IsNotNull(textMesh);
     }
 
+    private void Update()
+    {
+        textMesh.enabled = MatchManager.Instance.Phase == MatchPhase.Countdown || MatchManager.Instance.Phase == MatchPhase.ChooseAction;
+    }
+
     private void OnEnable()
     {
         Assert.IsNull(instance);
