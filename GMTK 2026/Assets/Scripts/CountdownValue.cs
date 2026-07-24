@@ -109,4 +109,9 @@ public class CountdownValueUtil
     {
         return !AtLeast(lhs, rhs);
     }
+
+    public static bool Surpassed(CountdownValue lhs, CountdownValue rhs, bool reverse)
+    {
+        return reverse ? AtLeast(lhs, rhs) : AtMost(lhs, rhs);
+    }
 }

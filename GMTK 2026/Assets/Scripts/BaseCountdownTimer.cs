@@ -99,12 +99,62 @@ public class BaseCountdownTimer : MonoBehaviour
         {
             probability = speedUpProbability
         };
+        speedUp.whereToStart.
+            AddChoice(CountdownValue.Ten, 1f).
+            AddChoice(CountdownValue.Nine, 1f).
+            AddChoice(CountdownValue.Eight, 1f).
+            AddChoice(CountdownValue.Seven, 1f).
+            AddChoice(CountdownValue.Six, 2f).
+            AddChoice(CountdownValue.Five, 3f).
+            AddChoice(CountdownValue.Four, 2f).
+            AddChoice(CountdownValue.Three, 1.5f).
+            AddChoice(CountdownValue.Two, 1.5f);
+        speedUp.whereToStartFractions.
+            AddChoice(CountdownValue.Ten, 1f).
+            AddChoice(CountdownValue.Nine, 1f).
+            AddChoice(CountdownValue.Eight, 1f).
+            AddChoice(CountdownValue.Seven, 1f).
+            AddChoice(CountdownValue.Six, 2f).
+            AddChoice(CountdownValue.Five, 3f).
+            AddChoice(CountdownValue.Four, 2f).
+            AddChoice(CountdownValue.Three, 1.5f).
+            AddChoice(CountdownValue.Two, 1.5f).
+            AddChoice(CountdownValue.OneHalf, 2f);
+        speedUp.durationTicks.
+            AddChoice(10, 2f).
+            AddChoice(5, 2f).
+            AddChoice(3, 1f);
         timerEffectQueue.generators.Add(speedUp);
 
         SlowDownTimerEffectGenerator slowDown = new() 
         {
             probability = slowDownProbability
         };
+        slowDown.whereToStart.
+            AddChoice(CountdownValue.Ten, 1f).
+            AddChoice(CountdownValue.Nine, 1f).
+            AddChoice(CountdownValue.Eight, 1f).
+            AddChoice(CountdownValue.Seven, 1f).
+            AddChoice(CountdownValue.Six, 2f).
+            AddChoice(CountdownValue.Five, 3f).
+            AddChoice(CountdownValue.Four, 2f).
+            AddChoice(CountdownValue.Three, 1.5f).
+            AddChoice(CountdownValue.Two, 1.5f);
+        slowDown.whereToStartFractions.
+            AddChoice(CountdownValue.Ten, 1f).
+            AddChoice(CountdownValue.Nine, 1f).
+            AddChoice(CountdownValue.Eight, 1f).
+            AddChoice(CountdownValue.Seven, 1f).
+            AddChoice(CountdownValue.Six, 2f).
+            AddChoice(CountdownValue.Five, 3f).
+            AddChoice(CountdownValue.Four, 2f).
+            AddChoice(CountdownValue.Three, 1.5f).
+            AddChoice(CountdownValue.Two, 1.5f).
+            AddChoice(CountdownValue.OneHalf, 2f);
+        slowDown.durationTicks.
+            AddChoice(10, 2f).
+            AddChoice(5, 2f).
+            AddChoice(3, 1f);
         timerEffectQueue.generators.Add(slowDown);
 
         ReverseTimerEffectGenerator reverse = new()

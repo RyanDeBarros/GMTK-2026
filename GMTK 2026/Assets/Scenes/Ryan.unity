@@ -391,26 +391,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2227315581689000843, guid: b883093dd70772f42b7f8eeba356df8d, type: 3}
-      propertyPath: fakeoutProbability
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2227315581689000843, guid: b883093dd70772f42b7f8eeba356df8d, type: 3}
-      propertyPath: reverseProbability
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2227315581689000843, guid: b883093dd70772f42b7f8eeba356df8d, type: 3}
-      propertyPath: speedUpProbability
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2227315581689000843, guid: b883093dd70772f42b7f8eeba356df8d, type: 3}
-      propertyPath: slowDownProbability
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2227315581689000843, guid: b883093dd70772f42b7f8eeba356df8d, type: 3}
-      propertyPath: fractionsProbability
-      value: 0.2
-      objectReference: {fileID: 0}
     - target: {fileID: 2849211619898886883, guid: b883093dd70772f42b7f8eeba356df8d, type: 3}
       propertyPath: m_Name
       value: BaseCountdownTimer
