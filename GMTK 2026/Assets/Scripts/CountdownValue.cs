@@ -1,3 +1,5 @@
+using System;
+
 public enum CountdownValue
 {
     Ten,
@@ -113,5 +115,28 @@ public class CountdownValueUtil
     public static bool Surpassed(CountdownValue lhs, CountdownValue rhs, bool reverse)
     {
         return reverse ? AtLeast(lhs, rhs) : AtMost(lhs, rhs);
+    }
+
+    public static CountdownValue FromString(string s)
+    {
+        return s switch
+        {
+            "10" => CountdownValue.Ten,
+            "9" => CountdownValue.Nine,
+            "8" => CountdownValue.Eight,
+            "7" => CountdownValue.Seven,
+            "6" => CountdownValue.Six,
+            "5" => CountdownValue.Five,
+            "4" => CountdownValue.Four,
+            "3" => CountdownValue.Three,
+            "2" => CountdownValue.Two,
+            "1" => CountdownValue.One,
+            "0" => CountdownValue.Zero,
+
+            "1/2" => CountdownValue.OneHalf,
+            "1/3" => CountdownValue.OneThird,
+            "1/4" => CountdownValue.OneFourth,
+            _ => throw new NotImplementedException()
+        };
     }
 }

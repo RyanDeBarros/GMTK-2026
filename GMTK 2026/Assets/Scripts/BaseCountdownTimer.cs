@@ -32,19 +32,14 @@ public class BaseCountdownTimer : MonoBehaviour
     private readonly TimerEffectQueue timerEffectQueue = new();
     private bool newPass = false;
 
-    [Header("Timer Effect Parameters")]
-    [SerializeField] private float speedUpProbability = 0.2f;
-    [SerializeField] private float slowDownProbability = 0.2f;
-    [SerializeField] private float fakeoutProbability = 0.2f;
-    [SerializeField] private float fractionsProbability = 0.2f;
-    [SerializeField] private float reverseProbability = 0.2f;
+    [SerializeField] private TextAsset timerEffectParameters;
 
     void Start()
     {
+        TimerEffectConfigLoader.Load(timerEffectParameters).Configure(timerEffectQueue);
+
         countdownValue.Value = CountdownValue.Zero;
         countdownValue.Consume();
-
-        FillTimerEffectQueue();
 
         Restart();
     }
@@ -91,113 +86,6 @@ public class BaseCountdownTimer : MonoBehaviour
     private void OnDisable()
     {
         instance = null;
-    }
-
-    private void FillTimerEffectQueue()
-    {
-        SpeedUpTimerEffectGenerator speedUp = new()
-        {
-            probability = speedUpProbability
-        };
-        speedUp.whereToStart.
-            AddChoice(CountdownValue.Ten, 1f).
-            AddChoice(CountdownValue.Nine, 1f).
-            AddChoice(CountdownValue.Eight, 1f).
-            AddChoice(CountdownValue.Seven, 1f).
-            AddChoice(CountdownValue.Six, 2f).
-            AddChoice(CountdownValue.Five, 3f).
-            AddChoice(CountdownValue.Four, 2f).
-            AddChoice(CountdownValue.Three, 1.5f).
-            AddChoice(CountdownValue.Two, 1.5f);
-        speedUp.whereToStartFractions.
-            AddChoice(CountdownValue.Ten, 1f).
-            AddChoice(CountdownValue.Nine, 1f).
-            AddChoice(CountdownValue.Eight, 1f).
-            AddChoice(CountdownValue.Seven, 1f).
-            AddChoice(CountdownValue.Six, 2f).
-            AddChoice(CountdownValue.Five, 3f).
-            AddChoice(CountdownValue.Four, 2f).
-            AddChoice(CountdownValue.Three, 1.5f).
-            AddChoice(CountdownValue.Two, 1.5f).
-            AddChoice(CountdownValue.OneHalf, 2f);
-        speedUp.durationTicks.
-            AddChoice(10, 2f).
-            AddChoice(5, 2f).
-            AddChoice(3, 1f);
-        timerEffectQueue.generators.Add(speedUp);
-
-        SlowDownTimerEffectGenerator slowDown = new() 
-        {
-            probability = slowDownProbability
-        };
-        slowDown.whereToStart.
-            AddChoice(CountdownValue.Ten, 1f).
-            AddChoice(CountdownValue.Nine, 1f).
-            AddChoice(CountdownValue.Eight, 1f).
-            AddChoice(CountdownValue.Seven, 1f).
-            AddChoice(CountdownValue.Six, 2f).
-            AddChoice(CountdownValue.Five, 3f).
-            AddChoice(CountdownValue.Four, 2f).
-            AddChoice(CountdownValue.Three, 1.5f).
-            AddChoice(CountdownValue.Two, 1.5f);
-        slowDown.whereToStartFractions.
-            AddChoice(CountdownValue.Ten, 1f).
-            AddChoice(CountdownValue.Nine, 1f).
-            AddChoice(CountdownValue.Eight, 1f).
-            AddChoice(CountdownValue.Seven, 1f).
-            AddChoice(CountdownValue.Six, 2f).
-            AddChoice(CountdownValue.Five, 3f).
-            AddChoice(CountdownValue.Four, 2f).
-            AddChoice(CountdownValue.Three, 1.5f).
-            AddChoice(CountdownValue.Two, 1.5f).
-            AddChoice(CountdownValue.OneHalf, 2f);
-        slowDown.durationTicks.
-            AddChoice(10, 2f).
-            AddChoice(5, 2f).
-            AddChoice(3, 1f);
-        timerEffectQueue.generators.Add(slowDown);
-
-        ReverseTimerEffectGenerator reverse = new()
-        {
-            probability = reverseProbability
-        };
-        reverse.whereToStart.
-            AddChoice(CountdownValue.One, 5f).
-            AddChoice(CountdownValue.Two, 3f).
-            AddChoice(CountdownValue.Three, 1f);
-        reverse.whereToStartFractions.
-            AddChoice(CountdownValue.One, 3f).
-            AddChoice(CountdownValue.OneHalf, 1f).
-            AddChoice(CountdownValue.OneThird, 1f).
-            AddChoice(CountdownValue.OneFourth, 3f);
-        reverse.whereToEnd.
-            AddChoice(CountdownValue.Four, 5f).
-            AddChoice(CountdownValue.Five, 3f).
-            AddChoice(CountdownValue.Six, 1f);
-        reverse.whereToEndFractions.
-            AddChoice(CountdownValue.Two, 1f).
-            AddChoice(CountdownValue.Three, 1f).
-            AddChoice(CountdownValue.Four, 1f);
-        timerEffectQueue.generators.Add(reverse);
-
-        FractionTimerEffectGenerator fractions = new()
-        {
-            probability = fractionsProbability
-        };
-        timerEffectQueue.generators.Add(fractions);
-
-        FakeoutTimerEffectGenerator fakeout = new()
-        {
-            probability = fakeoutProbability
-        };
-        fakeout.jumpTo.
-            AddChoice(CountdownValue.One, 2f).
-            AddChoice(CountdownValue.Two, 1f).
-            AddChoice(CountdownValue.Three, 3f).
-            AddChoice(CountdownValue.Four, 4f).
-            AddChoice(CountdownValue.Five, 1f).
-            AddChoice(CountdownValue.Ten, 1f);
-        timerEffectQueue.generators.Add(fakeout);
     }
 
     public void Restart()
