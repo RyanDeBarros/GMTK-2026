@@ -20,16 +20,20 @@ public class BaseCountdownTimer : MonoBehaviour
 
     void Start()
     {
-        timer = maxIndex;
+        SetTimer(maxIndex);
     }
 
     void Update()
     {
-        timer -= Time.deltaTime * CurrentBPM() / 60f;
-        if (timer < 0f)
-            timer = 0f;
+        SetTimer(timer - Time.deltaTime * CurrentBPM() / 60f);
+    }
 
-        Debug.Log(CurrentCountdownValue());
+    private void SetTimer(float tm)
+    {
+        int oldCountdownValue = CurrentCountdownValue();
+        timer = Mathf.Clamp(tm, 0f, maxIndex);
+        if (CurrentCountdownValue() != oldCountdownValue)
+            OnCountdownValueChanged();
     }
 
     public void SpeedUp()
@@ -54,5 +58,11 @@ public class BaseCountdownTimer : MonoBehaviour
     public int CurrentCountdownValue()
     {
         return Mathf.CeilToInt(timer);
+    }
+
+    private void OnCountdownValueChanged()
+    {
+        CountdownDisplay.Instance.SetCountdownValue(CurrentCountdownValue());
+        // TODO sfx
     }
 }
