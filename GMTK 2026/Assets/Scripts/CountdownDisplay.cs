@@ -41,7 +41,7 @@ public class CountdownDisplay : MonoBehaviour
             CountdownValue.Three => "3",
             CountdownValue.Two => "2",
             CountdownValue.One => "1",
-            CountdownValue.Zero => "Pow!",
+            CountdownValue.Zero => "Go!",
 
             CountdownValue.OneHalf => "1/2",
             CountdownValue.OneThird => "1/3",

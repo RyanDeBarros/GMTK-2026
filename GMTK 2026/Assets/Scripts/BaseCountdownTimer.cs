@@ -24,8 +24,12 @@ public class BaseCountdownTimer : MonoBehaviour
 
     private readonly Settings settings = new();
 
+    private readonly TimerEffectQueue timerEffectQueue = new();
+
     void Start()
     {
+        // TODO fill all the timer effect generators
+
         Restart();
     }
 
@@ -49,7 +53,15 @@ public class BaseCountdownTimer : MonoBehaviour
     {
         timerDebt = 0f;
         countdownValue = CountdownValue.Ten;
+        timerEffectQueue.Deactivate();
+        timerEffectQueue.Activate();
         OnCountdownValueChanged();
+    }
+
+    public void NewPass()
+    {
+        timerEffectQueue.Deactivate();
+        timerEffectQueue.Activate();
     }
 
     public void SpeedUp()
@@ -85,5 +97,9 @@ public class BaseCountdownTimer : MonoBehaviour
     {
         CountdownDisplay.Instance.SetCountdownValue(countdownValue);
         // TODO sfx
+
+        // TODO update game state
+        if (countdownValue == CountdownValue.Zero)
+            timerEffectQueue.Deactivate();
     }
 }
