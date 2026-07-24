@@ -140,6 +140,13 @@ public class BaseCountdownTimer : MonoBehaviour
         {
             probability = fakeoutProbability
         };
+        fakeout.jumpTo.
+            AddChoice(CountdownValue.One, 2f).
+            AddChoice(CountdownValue.Two, 1f).
+            AddChoice(CountdownValue.Three, 3f).
+            AddChoice(CountdownValue.Four, 4f).
+            AddChoice(CountdownValue.Five, 1f).
+            AddChoice(CountdownValue.Ten, 1f);
         timerEffectQueue.generators.Add(fakeout);
     }
 
@@ -199,5 +206,10 @@ public class BaseCountdownTimer : MonoBehaviour
     public CountdownValue GetCountdownValue()
     {
         return countdownValue.Value;
+    }
+
+    public void DirectSetCountdownValue(CountdownValue value)
+    {
+        countdownValue.Value = value;
     }
 }

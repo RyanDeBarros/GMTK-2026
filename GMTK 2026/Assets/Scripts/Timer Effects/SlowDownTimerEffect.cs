@@ -4,7 +4,7 @@ public class SlowDownTimerEffect : TimerEffect
 {
     public override void Activate()
     {
-        // TODO
+        // NOP
     }
 
     public override void Deactivate()

@@ -30,7 +30,7 @@ public class DiscreteDistribution<T>
 
         foreach (Choice choice in choices)
         {
-            if (choice.weight <= r)
+            if (r <= choice.weight)
                 return choice.value;
             else
                 r -= choice.weight;

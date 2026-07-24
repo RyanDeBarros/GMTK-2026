@@ -4,7 +4,7 @@ public class SpeedUpTimerEffect : TimerEffect
 {
     public override void Activate()
     {
-        // TODO
+        // NOP
     }
 
     public override void Deactivate()
