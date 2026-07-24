@@ -391,6 +391,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2227315581689000843, guid: b883093dd70772f42b7f8eeba356df8d, type: 3}
+      propertyPath: timerEffectParameters
+      value: 
+      objectReference: {fileID: 4900000, guid: 435bede22487761408f476ea688f0e2a, type: 3}
     - target: {fileID: 2849211619898886883, guid: b883093dd70772f42b7f8eeba356df8d, type: 3}
       propertyPath: m_Name
       value: BaseCountdownTimer
