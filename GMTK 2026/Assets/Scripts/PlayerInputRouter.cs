@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.XR;
 
 public class PlayerInputRouter : MonoBehaviour
 {
@@ -49,6 +50,8 @@ public class PlayerInputRouter : MonoBehaviour
     private readonly Moveset moveset1 = new();
     private readonly Moveset moveset2 = new();
 
+    private InputAction pauseAction;
+
     private void Awake()
     {
         Assert.IsNotNull(player1);
@@ -66,17 +69,26 @@ public class PlayerInputRouter : MonoBehaviour
         moveset2.shoot = playerInput.actions["P2 Shoot"];
         moveset2.reload = playerInput.actions["P2 Reload"];
         moveset2.dodge = playerInput.actions["P2 Dodge"];
+
+        pauseAction = playerInput.actions["Pause"];
     }
 
     private void OnEnable()
     {
         moveset1.OnEnable();
         moveset2.OnEnable();
+        pauseAction.performed += OnPause;
     }
 
     private void OnDisable()
     {
         moveset1.OnDisable();
         moveset2.OnDisable();
+        pauseAction.performed -= OnPause;
+    }
+
+    private void OnPause(InputAction.CallbackContext _)
+    {
+        // TODO
     }
 }
