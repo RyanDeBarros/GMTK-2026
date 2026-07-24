@@ -3,12 +3,8 @@ using UnityEngine;
 
 public class BaseCountdownTimer : MonoBehaviour
 {
-    public static readonly int maxIndex = 10;
-
     public static readonly float normalBPM = 70f;
     public static readonly float fastBPM = 140f;
-
-    private float timer = 0;
 
     private enum BPMRate
     {
@@ -16,53 +12,78 @@ public class BaseCountdownTimer : MonoBehaviour
         Fast
     }
 
-    private int currentBPMIndex = 0;
+    private CountdownValue countdownValue = CountdownValue.Zero;
+    private float timerDebt = 0f;
+
+    public class Settings
+    {
+        public bool fractions = false;
+        public bool reverse = false;
+        public int bpmIndex = 0;
+    }
+
+    private readonly Settings settings = new();
 
     void Start()
     {
-        SetTimer(maxIndex);
+        Restart();
     }
 
     void Update()
     {
-        SetTimer(timer - Time.deltaTime * CurrentBPM() / 60f);
+        timerDebt += Time.deltaTime * CurrentBPM() / 60f;
+        bool changed = false;
+        while (timerDebt >= 1f)
+        {
+            --timerDebt;
+            CountdownValue oldCountdownValue = countdownValue;
+            countdownValue = CountdownValueUtil.Next(countdownValue, settings.fractions, settings.reverse);
+            changed |= oldCountdownValue != countdownValue;
+        }
+
+        if (changed)
+            OnCountdownValueChanged();
     }
 
-    private void SetTimer(float tm)
+    public void Restart()
     {
-        int oldCountdownValue = CurrentCountdownValue();
-        timer = Mathf.Clamp(tm, 0f, maxIndex);
-        if (CurrentCountdownValue() != oldCountdownValue)
-            OnCountdownValueChanged();
+        timerDebt = 0f;
+        countdownValue = CountdownValue.Ten;
+        OnCountdownValueChanged();
     }
 
     public void SpeedUp()
     {
-        ++currentBPMIndex;
+        ++settings.bpmIndex;
     }
 
     public void SlowDown()
     {
-        --currentBPMIndex;
+        --settings.bpmIndex;
+    }
+
+    public void ToggleFractions()
+    {
+        settings.fractions = !settings.fractions;
+    }
+
+    public void ToggleReverse()
+    {
+        settings.reverse = !settings.reverse;
     }
 
     public float CurrentBPM()
     {
-        return ((BPMRate)Math.Clamp(currentBPMIndex, (int)BPMRate.Normal, (int)BPMRate.Fast)) switch {
+        return ((BPMRate)Math.Clamp(settings.bpmIndex, (int)BPMRate.Normal, (int)BPMRate.Fast)) switch {
             BPMRate.Normal => normalBPM,
             BPMRate.Fast => fastBPM,
             _ => throw new NotImplementedException()
         };
     }
 
-    public int CurrentCountdownValue()
-    {
-        return Mathf.CeilToInt(timer);
-    }
-
     private void OnCountdownValueChanged()
     {
-        CountdownDisplay.Instance.SetCountdownValue(CurrentCountdownValue());
+        CountdownDisplay.Instance.SetCountdownValue(countdownValue);
         // TODO sfx
     }
 }
