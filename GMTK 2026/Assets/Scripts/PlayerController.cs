@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum SlomoAction
+public enum PlayerAction
 {
     None,
     Shoot,
@@ -14,22 +14,38 @@ public class PlayerController : MonoBehaviour
     public static PlayerController Player2;
 
     [SerializeField] private int lives = 5;
+    [SerializeField] private int maxAmmo = 2;
+    [SerializeField] private int dodgeCooldownTurns = 3;
 
-    private SlomoAction chosenAction = SlomoAction.None;
-    public SlomoAction ChosenAction => chosenAction;
+    private int ammo;
+    private int dodgeCooldown = 0;
+
+    public int MaxAmmo => maxAmmo;
+    public int Ammo => ammo;
+    public int DodgeCooldown => dodgeCooldown;
+
+    private PlayerAction chosenAction = PlayerAction.None;
+    public PlayerAction ChosenAction => chosenAction;
+
+    private void Start()
+    {
+        ammo = maxAmmo;
+    }
 
     public void Shoot()
     {
-        if (chosenAction != SlomoAction.None) // TODO also early exit if no ammo
-            return;
-
         if (MatchManager.Instance.Phase == MatchPhase.ChooseAction)
         {
-            chosenAction = SlomoAction.Shoot;
-            Debug.Log(name + ": Shoot");
-            // TODO shoot bullet
-            // TODO animation
-            // TODO sfx
+            if (chosenAction == PlayerAction.None && ammo > 0)
+            {
+                chosenAction = PlayerAction.Shoot;
+                --ammo;
+
+                Debug.Log(name + ": Shoot");
+                // TODO shoot bullet
+                // TODO animation
+                // TODO sfx
+            }
         }
         else if (MatchManager.Instance.Phase == MatchPhase.Countdown)
             GetHit();
@@ -37,16 +53,18 @@ public class PlayerController : MonoBehaviour
 
     public void Reload()
     {
-        if (chosenAction != SlomoAction.None) // TODO also early exit if ammo is full
-            return;
-
         if (MatchManager.Instance.Phase == MatchPhase.ChooseAction)
         {
-            chosenAction = SlomoAction.Reload;
-            Debug.Log(name + ": Reload");
-            // TODO reload ammo
-            // TODO animation
-            // TODO sfx
+            if (chosenAction == PlayerAction.None && ammo < maxAmmo)
+            {
+                chosenAction = PlayerAction.Reload;
+                ++ammo;
+
+                Debug.Log(name + ": Reload");
+                // TODO reload ammo
+                // TODO animation
+                // TODO sfx
+            }
         }
         else if (MatchManager.Instance.Phase == MatchPhase.Countdown)
             GetHit();
@@ -54,15 +72,17 @@ public class PlayerController : MonoBehaviour
 
     public void Dodge()
     {
-        if (chosenAction != SlomoAction.None) // TODO also early exit if dodge is on cooldown
-            return;
-
         if (MatchManager.Instance.Phase == MatchPhase.ChooseAction)
         {
-            chosenAction = SlomoAction.Dodge;
-            Debug.Log(name + ": Dodge");
-            // TODO animation
-            // TODO sfx
+            if (chosenAction == PlayerAction.None && dodgeCooldown <= 0)
+            {
+                chosenAction = PlayerAction.Dodge;
+                dodgeCooldown = dodgeCooldownTurns;
+
+                Debug.Log(name + ": Dodge");
+                // TODO animation
+                // TODO sfx
+            }
         }
         else if (MatchManager.Instance.Phase == MatchPhase.Countdown)
             GetHit();
@@ -70,7 +90,7 @@ public class PlayerController : MonoBehaviour
 
     public bool IsDodging()
     {
-        return chosenAction == SlomoAction.Dodge;
+        return chosenAction == PlayerAction.Dodge;
     }
 
     public void GetHit()
@@ -102,6 +122,9 @@ public class PlayerController : MonoBehaviour
 
     public void StartCountdownPhase()
     {
-        chosenAction = SlomoAction.None;
+        chosenAction = PlayerAction.None;
+
+        if (dodgeCooldown > 0)
+            --dodgeCooldown;
     }
 }

@@ -109,11 +109,13 @@ public class BaseCountdownTimer : MonoBehaviour
 
     public void SpeedUp()
     {
+        // TODO update music track
         ++settings.bpmIndex;
     }
 
     public void SlowDown()
     {
+        // TODO update music track
         --settings.bpmIndex;
     }
 

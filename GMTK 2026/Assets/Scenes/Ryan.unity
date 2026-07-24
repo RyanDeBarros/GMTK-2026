@@ -383,6 +383,17 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &330497758 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3935179923146044718, guid: c547f5a76d1f5d3459b3e486c58689c0, type: 3}
+  m_PrefabInstance: {fileID: 4731834083575290005}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b498c7276ebcb63499d066fb1b71c6cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
 --- !u!1001 &331599415
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -448,10 +459,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2227315581689000843, guid: b883093dd70772f42b7f8eeba356df8d, type: 3}
-      propertyPath: timerEffectParameters
-      value: 
-      objectReference: {fileID: 4900000, guid: 435bede22487761408f476ea688f0e2a, type: 3}
     - target: {fileID: 2849211619898886883, guid: b883093dd70772f42b7f8eeba356df8d, type: 3}
       propertyPath: m_Name
       value: TimerManager
@@ -501,6 +508,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b883093dd70772f42b7f8eeba356df8d, type: 3}
+--- !u!114 &1641250977 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5783529370052813087, guid: c547f5a76d1f5d3459b3e486c58689c0, type: 3}
+  m_PrefabInstance: {fileID: 4731834083575290005}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b498c7276ebcb63499d066fb1b71c6cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
 --- !u!1 &1906277685
 GameObject:
   m_ObjectHideFlags: 0
@@ -653,6 +671,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 261792899}
+    - target: {fileID: 3708822590213280557, guid: 6077dd3bf2adb644da65f9600be45c30, type: 3}
+      propertyPath: controller
+      value: 
+      objectReference: {fileID: 1641250977}
     - target: {fileID: 4326033934666593883, guid: 6077dd3bf2adb644da65f9600be45c30, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -693,6 +715,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6187634933917544174, guid: 6077dd3bf2adb644da65f9600be45c30, type: 3}
+      propertyPath: controller
+      value: 
+      objectReference: {fileID: 330497758}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
