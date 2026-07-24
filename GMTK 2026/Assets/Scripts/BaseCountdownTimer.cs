@@ -28,7 +28,12 @@ public class BaseCountdownTimer : MonoBehaviour
 
     void Start()
     {
-        // TODO fill all the timer effect generators
+        // TODO setup timer effect generator parameters
+        timerEffectQueue.generators.Add(new SpeedUpTimerEffectGenerator());
+        timerEffectQueue.generators.Add(new SlowDownTimerEffectGenerator());
+        timerEffectQueue.generators.Add(new ReverseTimerEffectGenerator());
+        timerEffectQueue.generators.Add(new FractionTimerEffectGenerator());
+        timerEffectQueue.generators.Add(new FakeoutTimerEffectGenerator());
 
         Restart();
     }
@@ -53,15 +58,15 @@ public class BaseCountdownTimer : MonoBehaviour
     {
         timerDebt = 0f;
         countdownValue = CountdownValue.Ten;
-        timerEffectQueue.Deactivate();
-        timerEffectQueue.Activate();
+        timerEffectQueue.Deactivate(this);
+        timerEffectQueue.Activate(this);
         OnCountdownValueChanged();
     }
 
     public void NewPass()
     {
-        timerEffectQueue.Deactivate();
-        timerEffectQueue.Activate();
+        timerEffectQueue.Deactivate(this);
+        timerEffectQueue.Activate(this);
     }
 
     public void SpeedUp()
@@ -74,14 +79,14 @@ public class BaseCountdownTimer : MonoBehaviour
         --settings.bpmIndex;
     }
 
-    public void ToggleFractions()
+    public void SetFractions(bool fractions)
     {
-        settings.fractions = !settings.fractions;
+        settings.fractions = fractions;
     }
 
-    public void ToggleReverse()
+    public void SetReverse(bool reverse)
     {
-        settings.reverse = !settings.reverse;
+        settings.reverse = reverse;
     }
 
     public float CurrentBPM()
@@ -98,8 +103,10 @@ public class BaseCountdownTimer : MonoBehaviour
         CountdownDisplay.Instance.SetCountdownValue(countdownValue);
         // TODO sfx
 
-        // TODO update game state
+        timerEffectQueue.OnCountdownChanged(this);
         if (countdownValue == CountdownValue.Zero)
-            timerEffectQueue.Deactivate();
+            timerEffectQueue.Deactivate(this);
+
+        // TODO update game state when value reaches 0
     }
 }
