@@ -7,7 +7,10 @@ public class Birb : MonoBehaviour
 
     [SerializeField] private float perchDurationMin = 2f;
     [SerializeField] private float perchDurationMax = 4f;
+
+    [SerializeField] private float slomoSlowDown = 0.5f;
     [SerializeField] private float flightSpeed = 20f;
+
     [SerializeField] private float offsetScreenWaitMin = 3f;
     [SerializeField] private float offsetScreenWaitMax = 20f;
     [SerializeField] private float offsetScreenWaitMedian = 12f;
@@ -34,7 +37,7 @@ public class Birb : MonoBehaviour
         switch (phase)
         {
             case Phase.Offscreen:
-                waitTime -= Time.deltaTime;
+                waitTime -= DeltaTime();
                 if (waitTime <= 0f)
                     phase = Phase.FlyingDown;
 
@@ -43,7 +46,7 @@ public class Birb : MonoBehaviour
             case Phase.FlyingDown:
                 {
                     Vector3 pos = transform.position;
-                    pos.y = Mathf.Clamp(pos.y - Time.deltaTime * flightSpeed, perchPositionY, offscreenPositionY);
+                    pos.y = Mathf.Clamp(pos.y - DeltaTime() * flightSpeed, perchPositionY, offscreenPositionY);
                     transform.position = pos;
 
                     if (pos.y == perchPositionY)
@@ -56,7 +59,7 @@ public class Birb : MonoBehaviour
                 break;
 
             case Phase.Perching:
-                waitTime -= Time.deltaTime;
+                waitTime -= DeltaTime();
                 if (waitTime <= 0f)
                     phase = Phase.FlyingOff;
 
@@ -65,7 +68,7 @@ public class Birb : MonoBehaviour
             case Phase.FlyingOff:
                 {
                     Vector3 pos = transform.position;
-                    pos.y = Mathf.Clamp(pos.y + Time.deltaTime * flightSpeed, perchPositionY, offscreenPositionY);
+                    pos.y = Mathf.Clamp(pos.y + DeltaTime() * flightSpeed, perchPositionY, offscreenPositionY);
                     transform.position = pos;
 
                     if (pos.y == offscreenPositionY)
@@ -77,6 +80,14 @@ public class Birb : MonoBehaviour
 
                 break;
         }
+    }
+
+    private float DeltaTime()
+    {
+        float dt = Time.deltaTime;
+        if (MatchManager.Instance.Phase == MatchPhase.Slomo)
+            dt *= slomoSlowDown;
+        return dt;
     }
 
     private void OnTriggerEnter(Collider other)
