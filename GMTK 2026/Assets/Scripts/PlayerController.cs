@@ -58,9 +58,6 @@ public class PlayerController : MonoBehaviour
             if (CanShoot())
             {
                 chosenAction = PlayerAction.Shoot;
-
-                Debug.Log(name + ": Take Aim");
-                // TODO start aiming
                 // TODO animation
                 // TODO sfx
             }
@@ -97,8 +94,6 @@ public class PlayerController : MonoBehaviour
                 chosenAction = PlayerAction.Reload;
                 ++ammo;
 
-                Debug.Log(name + ": Reload");
-                // TODO reload ammo
                 // TODO animation
                 // TODO sfx
             }
