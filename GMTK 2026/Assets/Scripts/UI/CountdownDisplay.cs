@@ -23,6 +23,7 @@ public class CountdownDisplay : MonoBehaviour
     private void Update()
     {
         textMesh.enabled = MatchManager.Instance.Phase == MatchPhase.Countdown || MatchManager.Instance.Phase == MatchPhase.ChooseAction;
+        SetCountdownValue(BaseCountdownTimer.Instance.GetCountdownValue());
     }
 
     private void OnEnable()

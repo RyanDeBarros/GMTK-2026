@@ -58,6 +58,7 @@ public class PlayerController : MonoBehaviour
             if (CanShoot())
             {
                 chosenAction = PlayerAction.Shoot;
+                Soundtrack.Play(Song.Slomo, true);
                 // TODO animation
                 // TODO sfx
             }
@@ -116,7 +117,6 @@ public class PlayerController : MonoBehaviour
                 chosenAction = PlayerAction.Dodge;
                 dodgeCooldown = dodgeCooldownTurns;
 
-                Debug.Log(name + ": Dodge");
                 // TODO animation
                 // TODO sfx
             }
@@ -137,7 +137,6 @@ public class PlayerController : MonoBehaviour
 
     public void GetHit()
     {
-        Debug.Log(name + ": Ow!");
         --lives;
         // TODO animation
         // TODO sfx
@@ -148,7 +147,6 @@ public class PlayerController : MonoBehaviour
 
     public void GetCritHit()
     {
-        Debug.Log(name + ": Ow! (crit)");
         lives -= 2;
         // TODO animation
         // TODO sfx

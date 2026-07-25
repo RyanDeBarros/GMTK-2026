@@ -1,4 +1,3 @@
-using NUnit.Framework.Constraints;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -20,7 +19,6 @@ public class MatchManager : MonoBehaviour
     public MatchPhase Phase => phase;
 
     [Header("Game Phase")]
-    [SerializeField] private float chooseActionDuration = 0.5f;
     [SerializeField] private float slomoDuration = 2.5f;
 
     [Header("Aiming")]
@@ -37,7 +35,10 @@ public class MatchManager : MonoBehaviour
 
     private void Start()
     {
+        Soundtrack.Play(Song.CountdownNormal, true);
+
         // TODO intro cutscene first
+
         SetPhase(MatchPhase.Countdown);
     }
 
@@ -46,15 +47,20 @@ public class MatchManager : MonoBehaviour
         if (phase == MatchPhase.ChooseAction)
         {
             timer += Time.deltaTime;
-            if (timer >= chooseActionDuration)
-                SetPhase(MatchPhase.Slomo);
+            if (timer >= ChooseActionDuration())
+            {
+                if (PlayerController.Player1.ChosenAction == PlayerAction.Shoot || PlayerController.Player2.ChosenAction == PlayerAction.Shoot)
+                    SetPhase(MatchPhase.Slomo);
+                else
+                    SetPhase(MatchPhase.Countdown);
+            }
         }
         else if (phase == MatchPhase.Slomo)
         {
             timer += Time.deltaTime;
             if (timer >= slomoDuration || (!PlayerController.Player1.IsAiming() && !PlayerController.Player2.IsAiming()))
             {
-                // TODO fade out slomo music track
+                Soundtrack.Play(Song.CountdownNormal);
                 SetPhase(MatchPhase.Countdown);
             }
         }
@@ -72,6 +78,11 @@ public class MatchManager : MonoBehaviour
         instance = null;
     }
 
+    private float ChooseActionDuration()
+    {
+        return 60f / BaseCountdownTimer.Instance.CurrentBPM();
+    }
+
     public void SetPhase(MatchPhase phase)
     {
         this.phase = phase;
@@ -84,10 +95,7 @@ public class MatchManager : MonoBehaviour
         }
 
         if (phase == MatchPhase.ChooseAction)
-        {
-            // TODO fade in slomo music track
             timer = 0f;
-        }
 
         if (phase == MatchPhase.Slomo)
         {
