@@ -60,8 +60,9 @@ public class Pistol : MonoBehaviour
 
     public void Shoot()
     {
-        Instantiate(bulletPrefab, bulletSpawn.position, crosshair.transform.rotation).
-            GetComponent<Bullet>().direction = crosshair.transform.right * (flipDirection ? -1f : 1f);
+        Bullet bullet = Instantiate(bulletPrefab, bulletSpawn.position, crosshair.transform.rotation).GetComponent<Bullet>();
+        bullet.owner = controller;
+        bullet.direction = crosshair.transform.right * (flipDirection ? -1f : 1f);
     }
 
     public void SetInitialAngle(float initialAngle, bool ccw, float aimSpeed, float minAimAngle, float maxAimAngle)

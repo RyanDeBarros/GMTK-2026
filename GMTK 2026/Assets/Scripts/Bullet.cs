@@ -1,10 +1,12 @@
 using UnityEngine;
-using UnityEngine.Assertions;
 
 public class Bullet : MonoBehaviour
 {
     [SerializeField] private float speed = 100f;
     [SerializeField] private string bulletBoundsLayer = "Bullet Bounds";
+    [SerializeField] private string playerBodyLayer = "Player Body";
+    [SerializeField] private string playerHeadLayer = "Player Head";
+    public PlayerController owner;
 
     public Vector3 direction;
 
@@ -13,16 +15,38 @@ public class Bullet : MonoBehaviour
         transform.position += speed * Time.deltaTime * direction;
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        PlayerController player = other.GetComponentInParent<PlayerController>();
+        if (player == null || player == owner)
+            return;
+
+        if (other.gameObject.layer == LayerMask.NameToLayer(playerBodyLayer))
+        {
+            player.GetHit();
+            // TODO hit sfx
+            Despawn();
+        }
+        else if (other.gameObject.layer == LayerMask.NameToLayer(playerHeadLayer))
+        {
+            player.GetCritHit();
+            // TODO crit sfx
+            Despawn();
+        }
+    }
+
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.layer == LayerMask.NameToLayer(bulletBoundsLayer))
+        {
+            // TODO miss sfx
             Despawn();
+        }
     }
 
     private void Despawn()
     {
-        // TODO animation
-        // TODO sfx
+        // TODO vfx
         Destroy(gameObject);
     }
 }
