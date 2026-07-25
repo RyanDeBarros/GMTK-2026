@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public enum PlayerAction
 {
@@ -13,13 +14,19 @@ public class PlayerController : MonoBehaviour
     public static PlayerController Player1;
     public static PlayerController Player2;
 
-    [SerializeField] private int lives = 5;
+    private Pistol pistol;
+    public Pistol Pistol => pistol;
+
+    [SerializeField] private int maxLives = 5;
     [SerializeField] private int maxAmmo = 2;
     [SerializeField] private int dodgeCooldownTurns = 3;
 
+    private int lives;
     private int ammo;
     private int dodgeCooldown = 0;
 
+    public int Lives => lives;
+    public int MaxLives => maxLives;
     public int MaxAmmo => maxAmmo;
     public int Ammo => ammo;
     public int DodgeCooldown => dodgeCooldown;
@@ -27,41 +34,66 @@ public class PlayerController : MonoBehaviour
     private PlayerAction chosenAction = PlayerAction.None;
     public PlayerAction ChosenAction => chosenAction;
 
+    private void Awake()
+    {
+        pistol = GetComponent<Pistol>();
+        Assert.IsNotNull(pistol);
+    }
+
     private void Start()
     {
         ammo = maxAmmo;
+        lives = maxLives;
+    }
+
+    public bool CanSelectAction()
+    {
+        return (MatchManager.Instance.Phase == MatchPhase.Countdown || MatchManager.Instance.Phase == MatchPhase.ChooseAction) && chosenAction == PlayerAction.None;
     }
 
     public void Shoot()
     {
         if (MatchManager.Instance.Phase == MatchPhase.ChooseAction)
         {
-            if (chosenAction == PlayerAction.None && ammo > 0)
+            if (CanShoot())
             {
                 chosenAction = PlayerAction.Shoot;
-                --ammo;
-
-                Debug.Log(name + ": Shoot");
-                // TODO shoot bullet
                 // TODO animation
                 // TODO sfx
             }
         }
         else if (MatchManager.Instance.Phase == MatchPhase.Countdown)
             GetHit();
+        else if (MatchManager.Instance.Phase == MatchPhase.Slomo && chosenAction == PlayerAction.Shoot)
+        {
+            chosenAction = PlayerAction.None;
+            --ammo;
+            pistol.Shoot();
+
+            // TODO animation
+            // TODO sfx
+        }
+    }
+
+    public bool CanShoot()
+    {
+        return CanSelectAction() && ammo > 0;
+    }
+
+    public bool IsAiming()
+    {
+        return MatchManager.Instance.Phase == MatchPhase.Slomo && chosenAction == PlayerAction.Shoot;
     }
 
     public void Reload()
     {
         if (MatchManager.Instance.Phase == MatchPhase.ChooseAction)
         {
-            if (chosenAction == PlayerAction.None && ammo < maxAmmo)
+            if (CanReload())
             {
                 chosenAction = PlayerAction.Reload;
                 ++ammo;
 
-                Debug.Log(name + ": Reload");
-                // TODO reload ammo
                 // TODO animation
                 // TODO sfx
             }
@@ -70,11 +102,16 @@ public class PlayerController : MonoBehaviour
             GetHit();
     }
 
+    public bool CanReload()
+    {
+        return CanSelectAction() && ammo < maxAmmo;
+    }
+
     public void Dodge()
     {
         if (MatchManager.Instance.Phase == MatchPhase.ChooseAction)
         {
-            if (chosenAction == PlayerAction.None && dodgeCooldown <= 0)
+            if (CanDodge())
             {
                 chosenAction = PlayerAction.Dodge;
                 dodgeCooldown = dodgeCooldownTurns;
@@ -86,6 +123,11 @@ public class PlayerController : MonoBehaviour
         }
         else if (MatchManager.Instance.Phase == MatchPhase.Countdown)
             GetHit();
+    }
+
+    public bool CanDodge()
+    {
+        return CanSelectAction() && dodgeCooldown <= 0;
     }
 
     public bool IsDodging()
