@@ -7,6 +7,7 @@ public class PlayerStatsController : MonoBehaviour
     [SerializeField] private PlayerController controller;
     [SerializeField] private TextMeshProUGUI ammoText;
     [SerializeField] private TextMeshProUGUI dodgeText;
+    // TODO player lives left
 
     [SerializeField] private GameObject shootPrompt;
     [SerializeField] private GameObject reloadPrompt;
