@@ -107,14 +107,30 @@ public class BaseCountdownTimer : MonoBehaviour
 
     public void SpeedUp()
     {
-        // TODO update music track
         ++settings.bpmIndex;
+        SyncMusicTrack();
     }
 
     public void SlowDown()
     {
-        // TODO update music track
         --settings.bpmIndex;
+        SyncMusicTrack();
+    }
+
+    private void SyncMusicTrack()
+    {
+        switch ((BPMRate)Math.Clamp(settings.bpmIndex, (int)BPMRate.Slow, (int)BPMRate.Fast))
+        {
+            case BPMRate.Slow:
+                Soundtrack.Play(Song.CountdownSlow);
+                break;
+            case BPMRate.Normal:
+                Soundtrack.Play(Song.CountdownNormal);
+                break;
+            case BPMRate.Fast:
+                Soundtrack.Play(Song.CountdownFast);
+                break;
+        }
     }
 
     public void SetFractions(bool fractions)
@@ -139,7 +155,7 @@ public class BaseCountdownTimer : MonoBehaviour
 
     public float CurrentBPM()
     {
-        return ((BPMRate)Math.Clamp(settings.bpmIndex, (int)BPMRate.Slow, (int)BPMRate.Fast)) switch {
+        return (BPMRate)Math.Clamp(settings.bpmIndex, (int)BPMRate.Slow, (int)BPMRate.Fast) switch {
             BPMRate.Slow => slowBPM,
             BPMRate.Normal => normalBPM,
             BPMRate.Fast => fastBPM,

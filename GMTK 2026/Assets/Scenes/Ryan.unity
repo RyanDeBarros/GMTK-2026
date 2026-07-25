@@ -562,7 +562,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7331389810257676192, guid: aa86b3912264afa44bf4b8291dc8d235, type: 3}
       propertyPath: crossfadeDuration
-      value: 0.5
+      value: 0.35
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
