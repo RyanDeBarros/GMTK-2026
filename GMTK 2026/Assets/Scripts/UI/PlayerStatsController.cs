@@ -11,6 +11,7 @@ public class PlayerStatsController : MonoBehaviour
     [SerializeField] private GameObject shootPrompt;
     [SerializeField] private GameObject reloadPrompt;
     [SerializeField] private GameObject dodgePrompt;
+    [SerializeField] private GameObject slomoPrompt;
 
     private void Awake()
     {
@@ -21,6 +22,7 @@ public class PlayerStatsController : MonoBehaviour
         Assert.IsNotNull(shootPrompt);
         Assert.IsNotNull(reloadPrompt);
         Assert.IsNotNull(dodgePrompt);
+        Assert.IsNotNull(slomoPrompt);
     }
 
     private void Update()
@@ -32,5 +34,7 @@ public class PlayerStatsController : MonoBehaviour
         shootPrompt.SetActive(controller.CanShoot());
         reloadPrompt.SetActive(controller.CanReload());
         dodgePrompt.SetActive(controller.CanDodge());
+
+        slomoPrompt.SetActive(MatchManager.Instance.Phase == MatchPhase.Slomo && controller.ChosenAction == PlayerAction.Shoot);
     }
 }

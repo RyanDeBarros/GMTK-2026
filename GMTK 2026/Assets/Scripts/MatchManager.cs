@@ -46,7 +46,7 @@ public class MatchManager : MonoBehaviour
         else if (phase == MatchPhase.Slomo)
         {
             timer += Time.deltaTime;
-            if (timer >= slomoDuration)
+            if (timer >= slomoDuration || (PlayerController.Player1.ChosenAction != PlayerAction.Shoot && PlayerController.Player2.ChosenAction != PlayerAction.Shoot))
             {
                 // TODO fade out slomo music track
                 SetPhase(MatchPhase.Countdown);

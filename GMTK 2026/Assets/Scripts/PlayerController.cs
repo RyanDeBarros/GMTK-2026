@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public enum PlayerAction
 {
@@ -13,6 +14,8 @@ public class PlayerController : MonoBehaviour
     public static PlayerController Player1;
     public static PlayerController Player2;
 
+    [SerializeField] private Pistol pistol;
+
     [SerializeField] private int lives = 5;
     [SerializeField] private int maxAmmo = 2;
     [SerializeField] private int dodgeCooldownTurns = 3;
@@ -26,6 +29,11 @@ public class PlayerController : MonoBehaviour
 
     private PlayerAction chosenAction = PlayerAction.None;
     public PlayerAction ChosenAction => chosenAction;
+
+    private void Awake()
+    {
+        Assert.IsNotNull(pistol);
+    }
 
     private void Start()
     {
@@ -54,10 +62,11 @@ public class PlayerController : MonoBehaviour
         }
         else if (MatchManager.Instance.Phase == MatchPhase.Countdown)
             GetHit();
-        else if (MatchManager.Instance.Phase == MatchPhase.Slomo)
+        else if (MatchManager.Instance.Phase == MatchPhase.Slomo && chosenAction == PlayerAction.Shoot)
         {
-            Debug.Log(name + ": Shoot");
-            // TODO shoot bullet
+            chosenAction = PlayerAction.None;
+            pistol.Shoot();
+
             // TODO animation
             // TODO sfx
         }
