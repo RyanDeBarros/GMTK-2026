@@ -32,30 +32,47 @@ public class PlayerController : MonoBehaviour
         ammo = maxAmmo;
     }
 
+    public bool CanSelectAction()
+    {
+        return (MatchManager.Instance.Phase == MatchPhase.Countdown || MatchManager.Instance.Phase == MatchPhase.ChooseAction) && chosenAction == PlayerAction.None;
+    }
+
     public void Shoot()
     {
         if (MatchManager.Instance.Phase == MatchPhase.ChooseAction)
         {
-            if (chosenAction == PlayerAction.None && ammo > 0)
+            if (CanShoot())
             {
                 chosenAction = PlayerAction.Shoot;
                 --ammo;
 
-                Debug.Log(name + ": Shoot");
-                // TODO shoot bullet
+                Debug.Log(name + ": Take Aim");
+                // TODO start aiming
                 // TODO animation
                 // TODO sfx
             }
         }
         else if (MatchManager.Instance.Phase == MatchPhase.Countdown)
             GetHit();
+        else if (MatchManager.Instance.Phase == MatchPhase.Slomo)
+        {
+            Debug.Log(name + ": Shoot");
+            // TODO shoot bullet
+            // TODO animation
+            // TODO sfx
+        }
+    }
+
+    public bool CanShoot()
+    {
+        return CanSelectAction() && ammo > 0;
     }
 
     public void Reload()
     {
         if (MatchManager.Instance.Phase == MatchPhase.ChooseAction)
         {
-            if (chosenAction == PlayerAction.None && ammo < maxAmmo)
+            if (CanReload())
             {
                 chosenAction = PlayerAction.Reload;
                 ++ammo;
@@ -70,11 +87,16 @@ public class PlayerController : MonoBehaviour
             GetHit();
     }
 
+    public bool CanReload()
+    {
+        return CanSelectAction() && ammo < maxAmmo;
+    }
+
     public void Dodge()
     {
         if (MatchManager.Instance.Phase == MatchPhase.ChooseAction)
         {
-            if (chosenAction == PlayerAction.None && dodgeCooldown <= 0)
+            if (CanDodge())
             {
                 chosenAction = PlayerAction.Dodge;
                 dodgeCooldown = dodgeCooldownTurns;
@@ -86,6 +108,11 @@ public class PlayerController : MonoBehaviour
         }
         else if (MatchManager.Instance.Phase == MatchPhase.Countdown)
             GetHit();
+    }
+
+    public bool CanDodge()
+    {
+        return CanSelectAction() && dodgeCooldown <= 0;
     }
 
     public bool IsDodging()
