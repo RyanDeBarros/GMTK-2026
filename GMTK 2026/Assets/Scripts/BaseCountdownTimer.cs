@@ -62,6 +62,7 @@ public class BaseCountdownTimer : MonoBehaviour
         {
             --timerDebt;
             countdownValue.Value = CountdownValueUtil.Next(GetCountdownValue(), settings.fractions, settings.reverse);
+            MatchManager.Instance.SyncCountdownMusic();
         }
 
         if (countdownValue.Modified())
@@ -108,29 +109,11 @@ public class BaseCountdownTimer : MonoBehaviour
     public void SpeedUp()
     {
         ++settings.bpmIndex;
-        SyncMusicTrack();
     }
 
     public void SlowDown()
     {
         --settings.bpmIndex;
-        SyncMusicTrack();
-    }
-
-    private void SyncMusicTrack()
-    {
-        switch ((BPMRate)Math.Clamp(settings.bpmIndex, (int)BPMRate.Slow, (int)BPMRate.Fast))
-        {
-            case BPMRate.Slow:
-                Soundtrack.Play(Song.CountdownSlow);
-                break;
-            case BPMRate.Normal:
-                Soundtrack.Play(Song.CountdownNormal);
-                break;
-            case BPMRate.Fast:
-                Soundtrack.Play(Song.CountdownFast);
-                break;
-        }
     }
 
     public void SetFractions(bool fractions)

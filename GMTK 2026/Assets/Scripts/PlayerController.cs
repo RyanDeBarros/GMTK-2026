@@ -38,10 +38,7 @@ public class PlayerController : MonoBehaviour
     {
         pistol = GetComponent<Pistol>();
         Assert.IsNotNull(pistol);
-    }
 
-    private void Start()
-    {
         ammo = maxAmmo;
         lives = maxLives;
     }
@@ -141,8 +138,7 @@ public class PlayerController : MonoBehaviour
         // TODO animation
         // TODO sfx
 
-        if (IsDead())
-            MatchManager.Instance.SetPhase(MatchPhase.End);
+        OnTakeDamage();
     }
 
     public void GetCritHit()
@@ -151,8 +147,15 @@ public class PlayerController : MonoBehaviour
         // TODO animation
         // TODO sfx
 
+        OnTakeDamage();
+    }
+
+    private void OnTakeDamage()
+    {
         if (IsDead())
             MatchManager.Instance.SetPhase(MatchPhase.End);
+        else
+            MatchManager.Instance.CheckCountdownMusicChange();
     }
 
     public bool IsDead()
