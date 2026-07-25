@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56d4e12754cc18a4eaf55e985c66a6c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MusicManager
-  crossfadeDuration: 0.5
+  crossfadeDuration: 0.4
 --- !u!114 &590856389178491800
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61,4 +61,4 @@ MonoBehaviour:
   countdownNormal: {fileID: 8300000, guid: 8bd18165a2db2a34ca3cabd6fa2ac901, type: 3}
   countdownFast: {fileID: 8300000, guid: 6b34688083884234aa31735a4901a550, type: 3}
   countdownSlow: {fileID: 8300000, guid: 1870e1ad2bed3894ab31b529b1f43ae5, type: 3}
-  slomo: {fileID: 8300000, guid: 2704d5a8d1924c74d9dcb2c8351ddc05, type: 3}
+  slomo: {fileID: 8300000, guid: 20756a8c95a1da546b3fd27206ce0e41, type: 3}
