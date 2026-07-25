@@ -7,7 +7,7 @@ public class PlayerStatsController : MonoBehaviour
     [SerializeField] private PlayerController controller;
     [SerializeField] private TextMeshProUGUI ammoText;
     [SerializeField] private TextMeshProUGUI dodgeText;
-    // TODO player lives left
+    [SerializeField] private ProgressBar healthBar;
 
     [SerializeField] private GameObject shootPrompt;
     [SerializeField] private GameObject reloadPrompt;
@@ -19,6 +19,7 @@ public class PlayerStatsController : MonoBehaviour
         Assert.IsNotNull(controller);
         Assert.IsNotNull(ammoText);
         Assert.IsNotNull(dodgeText);
+        Assert.IsNotNull(healthBar);
 
         Assert.IsNotNull(shootPrompt);
         Assert.IsNotNull(reloadPrompt);
@@ -30,9 +31,12 @@ public class PlayerStatsController : MonoBehaviour
     {
         ammoText.text = $"{controller.Ammo} / {controller.MaxAmmo}";
         dodgeText.text = controller.DodgeCooldown > 0 ? $"{controller.DodgeCooldown}" : "";
+        healthBar.SetValue(controller.Lives / (float)controller.MaxLives);
 
+        // TODO use smooth transitions
         ammoText.gameObject.SetActive(MatchManager.Instance.Phase == MatchPhase.Countdown || MatchManager.Instance.Phase == MatchPhase.ChooseAction);
         dodgeText.gameObject.SetActive(MatchManager.Instance.Phase == MatchPhase.Countdown || MatchManager.Instance.Phase == MatchPhase.ChooseAction);
+        healthBar.gameObject.SetActive(MatchManager.Instance.Phase == MatchPhase.Countdown || MatchManager.Instance.Phase == MatchPhase.ChooseAction);
 
         // TODO use tint overlay instead to disable action UI
         shootPrompt.SetActive(controller.CanShoot());

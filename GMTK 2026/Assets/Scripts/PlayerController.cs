@@ -17,13 +17,16 @@ public class PlayerController : MonoBehaviour
     private Pistol pistol;
     public Pistol Pistol => pistol;
 
-    [SerializeField] private int lives = 5;
+    [SerializeField] private int maxLives = 5;
     [SerializeField] private int maxAmmo = 2;
     [SerializeField] private int dodgeCooldownTurns = 3;
 
+    private int lives;
     private int ammo;
     private int dodgeCooldown = 0;
 
+    public int Lives => lives;
+    public int MaxLives => maxLives;
     public int MaxAmmo => maxAmmo;
     public int Ammo => ammo;
     public int DodgeCooldown => dodgeCooldown;
@@ -40,6 +43,7 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         ammo = maxAmmo;
+        lives = maxLives;
     }
 
     public bool CanSelectAction()
