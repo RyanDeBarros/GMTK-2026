@@ -27,6 +27,7 @@ public class MatchManager : MonoBehaviour
     [SerializeField] private float aimSpeed = 30f;
 
     private float timer = 0f;
+    private Song countdownSong;
 
     private void Awake()
     {
@@ -35,7 +36,8 @@ public class MatchManager : MonoBehaviour
 
     private void Start()
     {
-        Soundtrack.Play(Song.CountdownNormal, true);
+        CheckCountdownMusicChange();
+        Soundtrack.Play(countdownSong, true);
 
         // TODO intro cutscene first
 
@@ -60,7 +62,7 @@ public class MatchManager : MonoBehaviour
             timer += Time.deltaTime;
             if (timer >= slomoDuration || (!PlayerController.Player1.IsAiming() && !PlayerController.Player2.IsAiming()))
             {
-                Soundtrack.Play(Song.CountdownNormal);
+                Soundtrack.Play(countdownSong);
                 SetPhase(MatchPhase.Countdown);
             }
         }
@@ -105,5 +107,26 @@ public class MatchManager : MonoBehaviour
             PlayerController.Player2.Pistol.SetInitialAngle(initialAngle, ccw, aimSpeed, aimAngleMin, aimAngleMax);
             timer = 0f;
         }
+    }
+
+    public void CheckCountdownMusicChange()
+    {
+        int lives1 = PlayerController.Player1.Lives;
+        int maxLives1 = PlayerController.Player1.MaxLives;
+        int lives2 = PlayerController.Player2.Lives;
+        int maxLives2 = PlayerController.Player2.MaxLives;
+
+        if (lives1 == maxLives1 && lives2 == maxLives2)
+            countdownSong = Song.CountdownSlow;
+        else if (lives1 == 1 || lives2 == 1)
+            countdownSong = Song.CountdownFast;
+        else
+            countdownSong = Song.CountdownNormal;
+    }
+
+    public void SyncCountdownMusic()
+    {
+        if (phase == MatchPhase.Countdown)
+            Soundtrack.Play(countdownSong, true);
     }
 }

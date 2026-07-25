@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56d4e12754cc18a4eaf55e985c66a6c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MusicManager
-  crossfadeDuration: 0.4
+  crossfadeDuration: 0.5
 --- !u!114 &590856389178491800
 MonoBehaviour:
   m_ObjectHideFlags: 0
