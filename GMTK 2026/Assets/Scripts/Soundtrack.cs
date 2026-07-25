@@ -38,21 +38,21 @@ public class Soundtrack : MonoBehaviour
         DontDestroyOnLoad(instance);
     }
 
-    public static void Play(Song song)
+    public static void Play(Song song, bool direct = false)
     {
         switch (song)
         {
             case Song.CountdownNormal:
-                MusicManager.Instance.CrossFadeTrack(instance.countdownNormal);
+                MusicManager.Instance.CrossFadeTrack(instance.countdownNormal, direct, new ClipInfo() { bpm = 70 });
                 break;
             case Song.CountdownFast:
-                MusicManager.Instance.CrossFadeTrack(instance.countdownFast);
+                MusicManager.Instance.CrossFadeTrack(instance.countdownFast, direct, new ClipInfo() { bpm = 140 });
                 break;
             case Song.CountdownSlow:
-                MusicManager.Instance.CrossFadeTrack(instance.countdownSlow);
+                MusicManager.Instance.CrossFadeTrack(instance.countdownSlow, direct, new ClipInfo() { bpm = 35 });
                 break;
             case Song.Slomo:
-                MusicManager.Instance.CrossFadeTrack(instance.slomo, false);
+                MusicManager.Instance.CrossFadeTrack(instance.slomo, direct, new ClipInfo() { loop = false });
                 break;
             default:
                 throw new NotImplementedException();

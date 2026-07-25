@@ -78,8 +78,6 @@ public class BaseCountdownTimer : MonoBehaviour
         }
 
         countdownValue.Consume();
-
-        CountdownDisplay.Instance.SetCountdownValue(GetCountdownValue());
     }
 
     private void OnEnable()
