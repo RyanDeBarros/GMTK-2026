@@ -606,10 +606,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 444139852273562848, guid: c547f5a76d1f5d3459b3e486c58689c0, type: 3}
-      propertyPath: m_LocalScale.x
-      value: -1
-      objectReference: {fileID: 0}
     - target: {fileID: 4633727514867432520, guid: c547f5a76d1f5d3459b3e486c58689c0, type: 3}
       propertyPath: m_Name
       value: PlayerPair

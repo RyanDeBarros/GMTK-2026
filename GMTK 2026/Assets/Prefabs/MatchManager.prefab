@@ -44,3 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1020c4bf226f7874bb1caecaec0221b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MatchManager
+  chooseActionDuration: 0.5
+  slomoDuration: 2.5
+  aimAngleMin: -8
+  aimAngleMax: 10
+  aimSpeed: 30

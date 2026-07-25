@@ -19,8 +19,14 @@ public class MatchManager : MonoBehaviour
     private MatchPhase phase = MatchPhase.Intro;
     public MatchPhase Phase => phase;
 
+    [Header("Game Phase")]
     [SerializeField] private float chooseActionDuration = 0.5f;
     [SerializeField] private float slomoDuration = 2.5f;
+
+    [Header("Aiming")]
+    [SerializeField] private float aimAngleMin = -8f;
+    [SerializeField] private float aimAngleMax = 10f;
+    [SerializeField] private float aimSpeed = 30f;
 
     private float timer = 0f;
 
@@ -46,7 +52,7 @@ public class MatchManager : MonoBehaviour
         else if (phase == MatchPhase.Slomo)
         {
             timer += Time.deltaTime;
-            if (timer >= slomoDuration || (PlayerController.Player1.ChosenAction != PlayerAction.Shoot && PlayerController.Player2.ChosenAction != PlayerAction.Shoot))
+            if (timer >= slomoDuration || (!PlayerController.Player1.IsAiming() && !PlayerController.Player2.IsAiming()))
             {
                 // TODO fade out slomo music track
                 SetPhase(MatchPhase.Countdown);
@@ -84,6 +90,12 @@ public class MatchManager : MonoBehaviour
         }
 
         if (phase == MatchPhase.Slomo)
+        {
+            float initialAngle = Mathf.Lerp(aimAngleMin, aimAngleMax, Random.value);
+            bool ccw = Random.value < 0.5f;
+            PlayerController.Player1.Pistol.SetInitialAngle(initialAngle, ccw, aimSpeed, aimAngleMin, aimAngleMax);
+            PlayerController.Player2.Pistol.SetInitialAngle(initialAngle, ccw, aimSpeed, aimAngleMin, aimAngleMax);
             timer = 0f;
+        }
     }
 }

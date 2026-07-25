@@ -31,6 +31,9 @@ public class PlayerStatsController : MonoBehaviour
         ammoText.text = $"{controller.Ammo} / {controller.MaxAmmo}";
         dodgeText.text = controller.DodgeCooldown > 0 ? $"{controller.DodgeCooldown}" : "";
 
+        ammoText.gameObject.SetActive(MatchManager.Instance.Phase == MatchPhase.Countdown || MatchManager.Instance.Phase == MatchPhase.ChooseAction);
+        dodgeText.gameObject.SetActive(MatchManager.Instance.Phase == MatchPhase.Countdown || MatchManager.Instance.Phase == MatchPhase.ChooseAction);
+
         // TODO use tint overlay instead to disable action UI
         shootPrompt.SetActive(controller.CanShoot());
         reloadPrompt.SetActive(controller.CanReload());

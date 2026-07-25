@@ -6,9 +6,11 @@ public class Bullet : MonoBehaviour
     [SerializeField] private float speed = 100f;
     [SerializeField] private string bulletBoundsLayer = "Bullet Bounds";
 
+    public Vector3 direction;
+
     private void Update()
     {
-        transform.position += speed * Time.deltaTime * transform.forward;
+        transform.position += speed * Time.deltaTime * direction;
     }
 
     private void OnTriggerExit(Collider other)

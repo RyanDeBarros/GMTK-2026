@@ -14,7 +14,8 @@ public class PlayerController : MonoBehaviour
     public static PlayerController Player1;
     public static PlayerController Player2;
 
-    [SerializeField] private Pistol pistol;
+    private Pistol pistol;
+    public Pistol Pistol => pistol;
 
     [SerializeField] private int lives = 5;
     [SerializeField] private int maxAmmo = 2;
@@ -32,6 +33,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        pistol = GetComponent<Pistol>();
         Assert.IsNotNull(pistol);
     }
 
@@ -52,7 +54,6 @@ public class PlayerController : MonoBehaviour
             if (CanShoot())
             {
                 chosenAction = PlayerAction.Shoot;
-                --ammo;
 
                 Debug.Log(name + ": Take Aim");
                 // TODO start aiming
@@ -65,6 +66,7 @@ public class PlayerController : MonoBehaviour
         else if (MatchManager.Instance.Phase == MatchPhase.Slomo && chosenAction == PlayerAction.Shoot)
         {
             chosenAction = PlayerAction.None;
+            --ammo;
             pistol.Shoot();
 
             // TODO animation
@@ -75,6 +77,11 @@ public class PlayerController : MonoBehaviour
     public bool CanShoot()
     {
         return CanSelectAction() && ammo > 0;
+    }
+
+    public bool IsAiming()
+    {
+        return MatchManager.Instance.Phase == MatchPhase.Slomo && chosenAction == PlayerAction.Shoot;
     }
 
     public void Reload()

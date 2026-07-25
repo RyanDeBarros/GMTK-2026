@@ -86,6 +86,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7330925742579584809, guid: 147332eaa73811442ab469777f889fa0, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7330925742579584809, guid: 147332eaa73811442ab469777f889fa0, type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7330925742579584809, guid: 147332eaa73811442ab469777f889fa0, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -115,9 +127,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6507135323522422069}
     m_Modifications:
+    - target: {fileID: 644515714159540778, guid: 147332eaa73811442ab469777f889fa0, type: 3}
+      propertyPath: flipDirection
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3460022597395676220, guid: 147332eaa73811442ab469777f889fa0, type: 3}
       propertyPath: m_Name
       value: Player 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6641858911302012273, guid: 147332eaa73811442ab469777f889fa0, type: 3}
+      propertyPath: m_LocalScale.x
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 6641858911302012273, guid: 147332eaa73811442ab469777f889fa0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -157,6 +177,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6641858911302012273, guid: 147332eaa73811442ab469777f889fa0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7330925742579584809, guid: 147332eaa73811442ab469777f889fa0, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7330925742579584809, guid: 147332eaa73811442ab469777f889fa0, type: 3}
+      propertyPath: m_Color.g
+      value: 0.6666665
+      objectReference: {fileID: 0}
+    - target: {fileID: 7330925742579584809, guid: 147332eaa73811442ab469777f889fa0, type: 3}
+      propertyPath: m_Color.r
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
