@@ -98,6 +98,10 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7825541879179054271, guid: 147332eaa73811442ab469777f889fa0, type: 3}
+      propertyPath: dodgeSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: 16549cf220b8ad448b0fdf8376fb1512, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -191,6 +195,10 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7825541879179054271, guid: 147332eaa73811442ab469777f889fa0, type: 3}
+      propertyPath: dodgeSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: a78a98bf98903f24b9a58547ce238755, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

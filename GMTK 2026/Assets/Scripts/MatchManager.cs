@@ -115,7 +115,11 @@ public class MatchManager : MonoBehaviour
         }
 
         if (phase == MatchPhase.ChooseAction)
+        {
+            PlayerController.Player1.StartChooseActionPhase();
+            PlayerController.Player2.StartChooseActionPhase();
             timer = 0f;
+        }
 
         if (phase == MatchPhase.Slomo)
         {

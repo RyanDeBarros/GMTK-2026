@@ -32,7 +32,7 @@ public class Bullet : MonoBehaviour
             return;
 
         PlayerController player = other.GetComponentInParent<PlayerController>();
-        if (player == null || player == owner)
+        if (player == null || player == owner || player.Dodging)
             return;
 
         if (other.gameObject.layer == LayerMask.NameToLayer(playerBodyLayer))
