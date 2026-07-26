@@ -1,4 +1,8 @@
 using System;
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 
 public enum CountdownValue
 {
@@ -138,5 +142,30 @@ public class CountdownValueUtil
             "1/4" => CountdownValue.OneFourth,
             _ => throw new NotImplementedException()
         };
+    }
+
+    public static float Alpha(CountdownValue value)
+    {
+        int index = value switch
+        {
+            CountdownValue.Ten => 0,
+            CountdownValue.Nine => 1,
+            CountdownValue.Eight => 2,
+            CountdownValue.Seven => 3,
+            CountdownValue.Six => 4,
+            CountdownValue.Five => 5,
+            CountdownValue.Four => 6,
+            CountdownValue.Three => 7,
+            CountdownValue.Two => 8,
+            CountdownValue.One => 9,
+            CountdownValue.OneHalf => 10,
+            CountdownValue.OneThird => 11,
+            CountdownValue.OneFourth => 12,
+            CountdownValue.Zero => 13,
+            _ => throw new NotImplementedException(),
+        };
+
+        int length = Enum.GetValues(typeof(CountdownValue)).Length;
+        return (float)(index) / (length - 1);
     }
 }

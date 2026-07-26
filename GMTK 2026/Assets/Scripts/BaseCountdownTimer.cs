@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Audio;
 
 public class BaseCountdownTimer : MonoBehaviour
 {
@@ -35,8 +36,12 @@ public class BaseCountdownTimer : MonoBehaviour
 
     [SerializeField] private TextAsset timerEffectParameters;
 
+    [SerializeField] private AudioClip tickSFX;
     [SerializeField] private AudioClip goSFX;
-    private AudioSource audioSource;
+    [SerializeField] private float maxTickPitchIncrease = 0.4f;
+
+    private AudioSource tickAudioSource;
+    private AudioSource goAudioSource;
 
     void Awake()
     {
@@ -45,8 +50,10 @@ public class BaseCountdownTimer : MonoBehaviour
         Assert.IsNotNull(timerEffectParameters);
         Assert.IsNotNull(goSFX);
 
-        audioSource = gameObject.AddComponent<AudioSource>();
-        audioSource.playOnAwake = false;
+        tickAudioSource = gameObject.AddComponent<AudioSource>();
+        tickAudioSource.playOnAwake = false;
+        goAudioSource = gameObject.AddComponent<AudioSource>();
+        goAudioSource.playOnAwake = false;
     }
 
     void Start()
@@ -82,13 +89,11 @@ public class BaseCountdownTimer : MonoBehaviour
             {
                 timerEffectQueue.Deactivate();
                 MatchManager.Instance.SetPhase(MatchPhase.ChooseAction);
-                audioSource.clip = goSFX;
-                audioSource.Play();
+                goAudioSource.clip = goSFX;
+                goAudioSource.Play();
             }
             else
-            {
-                // TODO normal sfx?
-            }
+                PlayTickSFX();
         }
 
         countdownValue.Consume();
@@ -111,7 +116,15 @@ public class BaseCountdownTimer : MonoBehaviour
         timerDebt = 0f;
         countdownValue.Value = CountdownValue.Ten;
         countdownValue.Consume();
+        PlayTickSFX();
         NewPass();
+    }
+
+    private void PlayTickSFX()
+    {
+        tickAudioSource.clip = tickSFX;
+        tickAudioSource.pitch = 1f + CountdownValueUtil.Alpha(GetCountdownValue()) * maxTickPitchIncrease;
+        tickAudioSource.Play();
     }
 
     public void NewPass()
