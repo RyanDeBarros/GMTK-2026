@@ -1,29 +1,33 @@
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions;
-using UnityEngine.InputSystem;
-using UnityEngine.Rendering;
+using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
 
 public class CountdownDisplay : MonoBehaviour
 {
     private static CountdownDisplay instance;
     public static CountdownDisplay Instance => instance;
 
-    private TextMeshProUGUI textMesh;
+    [SerializeField] private Image textBg;
+    [SerializeField] private TextMeshProUGUI textMesh;
 
     private void Awake()
     {
-        Assert.IsNull(instance);
-
-        textMesh = GetComponent<TextMeshProUGUI>();
+        Assert.IsNotNull(textBg);
         Assert.IsNotNull(textMesh);
+    }
+
+    private void Start()
+    {
+        BaseCountdownTimer.Instance.tick.AddListener(OnTick);
     }
 
     private void Update()
     {
-        textMesh.enabled = MatchManager.Instance.Phase == MatchPhase.Countdown || MatchManager.Instance.Phase == MatchPhase.ChooseAction;
-        SetCountdownValue(BaseCountdownTimer.Instance.GetCountdownValue());
+        bool showHUD = MatchManager.Instance.Phase == MatchPhase.Countdown || MatchManager.Instance.Phase == MatchPhase.ChooseAction;
+        textBg.enabled = showHUD; // TODO animate textBg
+        textMesh.enabled = showHUD;
     }
 
     private void OnEnable()
@@ -40,7 +44,12 @@ public class CountdownDisplay : MonoBehaviour
 
     public void SetCountdownValue(CountdownValue value)
     {
-        textMesh.text = value switch {
+    }
+
+    private void OnTick()
+    {
+        textMesh.text = BaseCountdownTimer.Instance.GetCountdownValue() switch
+        {
             CountdownValue.Ten => "10",
             CountdownValue.Nine => "9",
             CountdownValue.Eight => "8",
@@ -58,5 +67,7 @@ public class CountdownDisplay : MonoBehaviour
             CountdownValue.OneFourth => "1/4",
             _ => ""
         };
+
+        textBg.GetComponent<RectTransform>().rotation = Quaternion.Euler(0f, 0f, Random.Range(0f, 360f));
     }
 }
