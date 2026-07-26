@@ -177,8 +177,7 @@ public class PlayerController : MonoBehaviour
         --lives;
         audioSource.clip = getHitSFX.Poll();
         audioSource.Play();
-        // TODO animation
-
+        animator.SetTrigger("Hit");
         OnTakeDamage();
     }
 
@@ -187,8 +186,7 @@ public class PlayerController : MonoBehaviour
         lives -= 2;
         audioSource.clip = getHitCritSFX.Poll();
         audioSource.Play();
-        // TODO animation
-
+        animator.SetTrigger("Crit");
         OnTakeDamage();
     }
 
