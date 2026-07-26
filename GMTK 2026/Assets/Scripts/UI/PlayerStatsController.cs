@@ -6,7 +6,9 @@ public class PlayerStatsController : MonoBehaviour
 {
     [SerializeField] private PlayerController controller;
     [SerializeField] private TextMeshProUGUI ammoText;
+    [SerializeField] private GameObject ammoRoot;
     [SerializeField] private TextMeshProUGUI dodgeText;
+    [SerializeField] private GameObject dodgeRoot;
     [SerializeField] private ProgressBar healthBar;
 
     [SerializeField] private GameObject shootPrompt;
@@ -18,7 +20,9 @@ public class PlayerStatsController : MonoBehaviour
     {
         Assert.IsNotNull(controller);
         Assert.IsNotNull(ammoText);
+        Assert.IsNotNull(ammoRoot);
         Assert.IsNotNull(dodgeText);
+        Assert.IsNotNull(dodgeRoot);
         Assert.IsNotNull(healthBar);
 
         Assert.IsNotNull(shootPrompt);
@@ -33,11 +37,10 @@ public class PlayerStatsController : MonoBehaviour
         dodgeText.text = controller.DodgeCooldown > 0 ? $"{controller.DodgeCooldown}" : "";
         healthBar.SetValue(controller.Lives / (float)controller.MaxLives);
 
-        // TODO use smooth transitions
         bool showHUD = (MatchManager.Instance.Phase == MatchPhase.Countdown || MatchManager.Instance.Phase == MatchPhase.ChooseAction || MatchManager.Instance.Phase == MatchPhase.Intro)
             && !MatchManager.Instance.Paused;
-        ammoText.gameObject.SetActive(showHUD);
-        dodgeText.gameObject.SetActive(showHUD);
+        ammoRoot.SetActive(showHUD && ammoText.text.Length > 0);
+        dodgeRoot.SetActive(showHUD && dodgeText.text.Length > 0);
         healthBar.gameObject.SetActive(showHUD);
 
         // TODO use tint overlay instead to disable action UI

@@ -79,7 +79,6 @@ public class BaseCountdownTimer : MonoBehaviour
         while (timerDebt >= 1f)
         {
             --timerDebt;
-            tick?.Invoke();
             countdownValue.Value = CountdownValueUtil.Next(GetCountdownValue(), settings.fractions, settings.reverse);
             MatchManager.Instance.SyncCountdownMusic();
         }
@@ -97,6 +96,8 @@ public class BaseCountdownTimer : MonoBehaviour
             }
             else
                 PlayTickSFX();
+
+            tick?.Invoke();
         }
 
         countdownValue.Consume();
