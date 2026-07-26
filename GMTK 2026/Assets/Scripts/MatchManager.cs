@@ -40,8 +40,7 @@ public class MatchManager : MonoBehaviour
         CheckCountdownMusicChange();
         Soundtrack.Play(countdownSong, true);
 
-        // TODO intro cutscene first
-
+        // TODO fade in first
         SetPhase(MatchPhase.Countdown);
     }
 

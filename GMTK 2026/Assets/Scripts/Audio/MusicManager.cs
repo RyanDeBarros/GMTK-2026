@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class ClipInfo
 {
-    public int bpm = 1;
+    public int bpm = 0;
     public bool loop = true;
+    public bool restart = true;
     public float volume = 1f;
 }
 
@@ -112,10 +113,15 @@ public class MusicManager : MonoBehaviour
         SetFrontClipInfo(info);
         FrontAudioSource().loop = info.loop;
 
-        if (trackCache.TryGetValue(clip, out TrackCacheInfo cache) && cache.clipInfo.loop)
+        if (trackCache.TryGetValue(clip, out TrackCacheInfo cache) && cache.clipInfo.loop && !cache.clipInfo.restart)
         {
-            float beatDuration = 60f / cache.clipInfo.bpm;
-            FrontAudioSource().time = Mathf.Floor(cache.time / beatDuration) * beatDuration;
+            if (cache.clipInfo.bpm > 0)
+            {
+                float beatDuration = 60f / cache.clipInfo.bpm;
+                FrontAudioSource().time = Mathf.Floor(cache.time / beatDuration) * beatDuration;
+            }
+            else
+                FrontAudioSource().time = cache.time;
         }
 
         FrontAudioSource().Play();

@@ -7,7 +7,9 @@ public enum Song
     CountdownNormal,
     CountdownFast,
     CountdownSlow,
-    Slomo
+    Slomo,
+    MainMenu,
+    MatchComplete
 }
 
 public class Soundtrack : MonoBehaviour
@@ -19,6 +21,8 @@ public class Soundtrack : MonoBehaviour
     [SerializeField] private AudioClip countdownFast;
     [SerializeField] private AudioClip countdownSlow;
     [SerializeField] private AudioClip slomo;
+    [SerializeField] private AudioClip mainMenu;
+    [SerializeField] private AudioClip matchComplete;
 
     private void Awake()
     {
@@ -34,6 +38,8 @@ public class Soundtrack : MonoBehaviour
         Assert.IsNotNull(countdownFast);
         Assert.IsNotNull(countdownSlow);
         Assert.IsNotNull(slomo);
+        Assert.IsNotNull(mainMenu);
+        Assert.IsNotNull(matchComplete);
 
         DontDestroyOnLoad(instance);
     }
@@ -43,17 +49,29 @@ public class Soundtrack : MonoBehaviour
         switch (song)
         {
             case Song.CountdownNormal:
-                MusicManager.Instance.CrossFadeTrack(instance.countdownNormal, direct, new ClipInfo() { bpm = 70 });
+                MusicManager.Instance.CrossFadeTrack(instance.countdownNormal, direct, new ClipInfo() { restart = false, bpm = 70 });
                 break;
+
             case Song.CountdownFast:
-                MusicManager.Instance.CrossFadeTrack(instance.countdownFast, direct, new ClipInfo() { bpm = 140 });
+                MusicManager.Instance.CrossFadeTrack(instance.countdownFast, direct, new ClipInfo() { restart = false, bpm = 140 });
                 break;
+
             case Song.CountdownSlow:
-                MusicManager.Instance.CrossFadeTrack(instance.countdownSlow, direct, new ClipInfo() { bpm = 35 });
+                MusicManager.Instance.CrossFadeTrack(instance.countdownSlow, direct, new ClipInfo() { restart = false, bpm = 35 });
                 break;
+
             case Song.Slomo:
                 MusicManager.Instance.CrossFadeTrack(instance.slomo, direct, new ClipInfo() { loop = false });
                 break;
+
+            case Song.MainMenu:
+                MusicManager.Instance.CrossFadeTrack(instance.mainMenu, direct, new ClipInfo());
+                break;
+
+            case Song.MatchComplete:
+                MusicManager.Instance.CrossFadeTrack(instance.matchComplete, direct, new ClipInfo());
+                break;
+
             default:
                 throw new NotImplementedException();
         }
