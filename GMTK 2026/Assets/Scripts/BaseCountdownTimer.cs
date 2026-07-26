@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.Assertions;
-using UnityEngine.Audio;
+using UnityEngine.Events;
 
 public class BaseCountdownTimer : MonoBehaviour
 {
@@ -43,6 +43,8 @@ public class BaseCountdownTimer : MonoBehaviour
     private AudioSource tickAudioSource;
     private AudioSource goAudioSource;
 
+    public UnityEvent tick;
+
     void Awake()
     {
         Assert.IsNull(instance);
@@ -77,6 +79,7 @@ public class BaseCountdownTimer : MonoBehaviour
         while (timerDebt >= 1f)
         {
             --timerDebt;
+            tick?.Invoke();
             countdownValue.Value = CountdownValueUtil.Next(GetCountdownValue(), settings.fractions, settings.reverse);
             MatchManager.Instance.SyncCountdownMusic();
         }
