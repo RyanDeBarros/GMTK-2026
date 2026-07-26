@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
-    path: Assets/Scenes/Sara.unity
+    path: Assets/Scenes/MainMenu.unity
     guid: aeb9dbec2f912e84bbda757aa3c672fc
   - enabled: 1
     path: Assets/Scenes/Game.unity
