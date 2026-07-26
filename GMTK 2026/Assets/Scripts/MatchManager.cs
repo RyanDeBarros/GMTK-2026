@@ -34,9 +34,16 @@ public class MatchManager : MonoBehaviour
     [SerializeField] private float aimAngleMax = 10f;
     [SerializeField] private float aimSpeed = 30f;
     [Header("Game Over UI")]
-    [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private TMP_Text winnerText;
     [SerializeField] private TMP_Text livesText;
+
+    [Header("Game Over UI")]
+    [SerializeField] private GameObject gameOverPanel;
+    [SerializeField] private Image winnerImage;
+    [SerializeField] private Sprite redWinsSprite;
+    [SerializeField] private Sprite blueWinsSprite;
+    [SerializeField] private Sprite noWinnerSprite;
+    [SerializeField] private TMP_Text resultText;
 
     private float timer = 0f;
     private Song countdownSong;
@@ -178,14 +185,23 @@ public class MatchManager : MonoBehaviour
         int lives1 = PlayerController.Player1.Lives;
         int lives2 = PlayerController.Player2.Lives;
 
-        string winnerName = lives1 > lives2 ? "Player 1" : "Player 2";
-        int winnerLives = Mathf.Max(lives1, lives2);
+        string reason = "What for..."; // change this to whatever fits your game
 
-        if (winnerText != null)
-            winnerText.text = $"{winnerName} Wins!";
-
-        if (livesText != null)
-            livesText.text = $"Lives Remaining: {winnerLives}";
+        if (lives1 == lives2)
+        {
+            winnerImage.sprite = noWinnerSprite;
+            resultText.text = $"Nobody won... {reason}";
+        }
+        else if (lives1 > lives2)
+        {
+            winnerImage.sprite = redWinsSprite;
+            resultText.text = $"Red won, at the cost of a life... {reason}";
+        }
+        else
+        {
+            winnerImage.sprite = blueWinsSprite;
+            resultText.text = $"Blue won, at the cost of a life... {reason}";
+        }
 
         gameOverPanel.SetActive(true);
     }
