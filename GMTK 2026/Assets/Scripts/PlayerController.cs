@@ -16,6 +16,8 @@ public class PlayerController : MonoBehaviour
     public static PlayerController Player1;
     public static PlayerController Player2;
 
+    [SerializeField] private Animator animator;
+
     private Pistol pistol;
     public Pistol Pistol => pistol;
 
@@ -51,6 +53,8 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        Assert.IsNotNull(animator);
+
         pistol = GetComponent<Pistol>();
         Assert.IsNotNull(pistol);
 
@@ -82,7 +86,7 @@ public class PlayerController : MonoBehaviour
             {
                 chosenAction = PlayerAction.Shoot;
                 Soundtrack.Play(Song.Slomo, true);
-                // TODO animation
+                animator.SetTrigger("Take Aim");
             }
             else
                 unavailableAction.Play();
@@ -99,7 +103,7 @@ public class PlayerController : MonoBehaviour
             pistol.Shoot();
             audioSource.clip = shootSFX.Poll();
             audioSource.Play();
-            // TODO animation
+            animator.SetTrigger("Shoot");
         }
     }
 
@@ -123,7 +127,7 @@ public class PlayerController : MonoBehaviour
                 ++ammo;
                 audioSource.clip = reloadSFX;
                 audioSource.Play();
-                // TODO animation
+                animator.SetTrigger("Reload");
             }
             else
                 unavailableAction.Play();
@@ -151,7 +155,7 @@ public class PlayerController : MonoBehaviour
                 dodgeCooldown = dodgeCooldownTurns;
                 audioSource.clip = dodgeSFX;
                 audioSource.Play();
-                // TODO animation
+                animator.SetTrigger("Dodge");
             }
             else
                 unavailableAction.Play();
@@ -173,8 +177,7 @@ public class PlayerController : MonoBehaviour
         --lives;
         audioSource.clip = getHitSFX.Poll();
         audioSource.Play();
-        // TODO animation
-
+        animator.SetTrigger("Hit");
         OnTakeDamage();
     }
 
@@ -183,8 +186,7 @@ public class PlayerController : MonoBehaviour
         lives -= 2;
         audioSource.clip = getHitCritSFX.Poll();
         audioSource.Play();
-        // TODO animation
-
+        animator.SetTrigger("Crit");
         OnTakeDamage();
     }
 
@@ -210,6 +212,8 @@ public class PlayerController : MonoBehaviour
 
         if (dodgeCooldown > 0)
             --dodgeCooldown;
+
+        animator.SetTrigger("Idle");
     }
 
     public void StartChooseActionPhase()
