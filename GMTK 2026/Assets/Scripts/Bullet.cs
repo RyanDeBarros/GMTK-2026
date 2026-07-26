@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.Assertions;
-using UnityEngine.Audio;
 
 public class Bullet : MonoBehaviour
 {
@@ -9,6 +8,7 @@ public class Bullet : MonoBehaviour
     [SerializeField] private string playerBodyLayer = "Player Body";
     [SerializeField] private string playerHeadLayer = "Player Head";
     [SerializeField] private ClipGroup missSFX;
+    [SerializeField] GameObject despawnVFX;
 
     public PlayerController owner;
 
@@ -19,6 +19,12 @@ public class Bullet : MonoBehaviour
     private void Awake()
     {
         Assert.IsNotNull(missSFX);
+        Assert.IsNotNull(despawnVFX);
+    }
+
+    private void Start()
+    {
+        Assert.IsNotNull(owner);
     }
 
     private void Update()
@@ -64,8 +70,14 @@ public class Bullet : MonoBehaviour
 
     public void Despawn()
     {
-        // TODO vfx
+        if (dead)
+            return;
+
         Destroy(gameObject);
         dead = true;
+
+        GameObject go = Instantiate(despawnVFX);
+        go.transform.position = transform.position;
+        go.AddComponent<TempObject>().lifetime = go.GetComponent<ParticleSystem>().main.duration;
     }
 }
