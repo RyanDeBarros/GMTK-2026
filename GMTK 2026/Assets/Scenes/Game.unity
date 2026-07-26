@@ -397,7 +397,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7960157104596716734, guid: 72cda8b6d62787b469ff3fcbbe65c185, type: 3}
       propertyPath: animationRate
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7960157104596716734, guid: 72cda8b6d62787b469ff3fcbbe65c185, type: 3}
       propertyPath: offsetScreenWaitMax

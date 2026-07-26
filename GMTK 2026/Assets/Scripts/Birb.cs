@@ -3,14 +3,16 @@ using UnityEngine.Assertions;
 
 public class Birb : MonoBehaviour
 {
+    [SerializeField] private float offscreenPositionX = 10f;
     [SerializeField] private float offscreenPositionY = 20f;
+    [SerializeField] private float perchPositionX = 0f;
     [SerializeField] private float perchPositionY = 1f;
 
     [SerializeField] private float perchDurationMin = 2f;
     [SerializeField] private float perchDurationMax = 4f;
 
     [SerializeField] private float slomoSlowDown = 0.5f;
-    [SerializeField] private float flightSpeed = 20f;
+    [SerializeField] private float flightSpeed = 16f;
 
     [SerializeField] private float offsetScreenWaitMin = 3f;
     [SerializeField] private float offsetScreenWaitMax = 20f;
@@ -58,7 +60,7 @@ public class Birb : MonoBehaviour
 
     private void Start()
     {
-        transform.position = new(transform.position.x, offscreenPositionY, transform.position.z);
+        transform.position = new(offscreenPositionX, offscreenPositionY, transform.position.z);
         GenerateOffscreenWait();
     }
 
@@ -86,14 +88,19 @@ public class Birb : MonoBehaviour
             case Phase.FlyingDown:
                 {
                     Vector3 pos = transform.position;
-                    pos.y = Mathf.Clamp(pos.y - DeltaTime() * flightSpeed, perchPositionY, offscreenPositionY);
-                    transform.position = pos;
+                    Vector2 dir = new(perchPositionX - pos.x, perchPositionY - pos.y);
+                    dir = DeltaTime() * flightSpeed * dir.normalized;
+                    pos.x = Mathf.Clamp(pos.x + dir.x, perchPositionX, offscreenPositionX);
+                    pos.y = Mathf.Clamp(pos.y + dir.y, perchPositionY, offscreenPositionY);
 
                     if (pos.y == perchPositionY)
                     {
+                        pos.x = perchPositionX;
                         SetPhase(Phase.Perching);
                         waitTime = Mathf.Lerp(perchDurationMin, perchDurationMax, Random.value);
                     }
+
+                    transform.position = pos;
                 }
 
                 break;
@@ -108,14 +115,20 @@ public class Birb : MonoBehaviour
             case Phase.FlyingOff:
                 {
                     Vector3 pos = transform.position;
-                    pos.y = Mathf.Clamp(pos.y + DeltaTime() * flightSpeed, perchPositionY, offscreenPositionY);
-                    transform.position = pos;
+                    Vector2 dir = new(offscreenPositionX - pos.x, offscreenPositionY - pos.y);
+                    dir = DeltaTime() * flightSpeed * dir.normalized;
+                    pos.x = Mathf.Clamp(pos.x + dir.x, perchPositionX, offscreenPositionX);
+                    pos.y = Mathf.Clamp(pos.y + dir.y, perchPositionY, offscreenPositionY);
+
 
                     if (pos.y == offscreenPositionY)
                     {
+                        pos.x = offscreenPositionX;
                         SetPhase(Phase.Offscreen);
                         GenerateOffscreenWait();
                     }
+
+                    transform.position = pos;
                 }
 
                 break;
@@ -132,6 +145,9 @@ public class Birb : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (phase != Phase.Perching)
+            return;
+
         Bullet bullet = other.GetComponentInParent<Bullet>();
         if (bullet == null)
             return;
