@@ -48,7 +48,19 @@ public class MatchManager : MonoBehaviour
 
     private void Start()
     {
+        CheckCountdownMusicChange();
+        Soundtrack.Play(countdownSong, true);
+
         StartCoroutine(IntroCutscene());
+
+        IEnumerator Transition()
+        {
+            yield return new WaitForSecondsRealtime(60f / introCutsceneBPM);
+            SetPhase(MatchPhase.Countdown);
+        }
+
+        // TODO use AudioSettings.dspTime?
+        StartCoroutine(Transition());
     }
 
     private void Update()
@@ -89,9 +101,6 @@ public class MatchManager : MonoBehaviour
 
     private IEnumerator IntroCutscene()
     {
-        CheckCountdownMusicChange();
-        Soundtrack.Play(countdownSong, true);
-
         float duration = 60f / introCutsceneBPM;
         for (float t = 0f; t < duration; t += Time.deltaTime)
         {
@@ -100,7 +109,6 @@ public class MatchManager : MonoBehaviour
         }
 
         fadeOverlay.color = new(0f, 0f, 0f, 0f);
-        SetPhase(MatchPhase.Countdown);
     }
 
     private float ChooseActionDuration()
@@ -167,6 +175,6 @@ public class MatchManager : MonoBehaviour
 
     public void Pause()
     {
-        pauseController.gameObject.SetActive(true);
+        pauseController.Pause();
     }
 }
