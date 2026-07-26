@@ -2,6 +2,8 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using TMPro;
 
 public enum MatchPhase
 {
@@ -31,6 +33,20 @@ public class MatchManager : MonoBehaviour
     [SerializeField] private float aimAngleMin = -8f;
     [SerializeField] private float aimAngleMax = 10f;
     [SerializeField] private float aimSpeed = 30f;
+    [Header("Game Over UI")]
+    [Header("Game Over UI")]
+    [SerializeField] private GameObject gameOverPanel;
+    [SerializeField] private Image winnerImage;
+    [SerializeField] private Sprite redWinsSprite;
+    [SerializeField] private Sprite blueWinsSprite;
+    [SerializeField] private Sprite noWinnerSprite;
+    [SerializeField] private TMP_Text resultText;
+    [SerializeField] private CanvasGroup gameOverCanvasGroup;
+    [SerializeField] private float fadeInDuration = 1f;
+    [SerializeField] private Image blackFade;
+    [SerializeField] private Image backgroundImage;
+    [SerializeField] private float blackFadeDuration = 0.5f;
+    [SerializeField] private float bgFadeDuration = 0.8f;
 
     private float timer = 0f;
     private Song countdownSong;
@@ -169,7 +185,72 @@ public class MatchManager : MonoBehaviour
         phase = MatchPhase.End;
         Soundtrack.Play(Song.MatchComplete);
 
-        // TODO UI
+        int lives1 = PlayerController.Player1.Lives;
+        int lives2 = PlayerController.Player2.Lives;
+
+        string reason = "What for..."; // change this to whatever fits your game
+
+        if (lives1 == lives2)
+        {
+            winnerImage.sprite = noWinnerSprite;
+            resultText.text = $"Nobody won... {reason}";
+        }
+        else if (lives1 > lives2)
+        {
+            winnerImage.sprite = redWinsSprite;
+            resultText.text = $"Red won, at the cost of a life... {reason}";
+        }
+        else
+        {
+            winnerImage.sprite = blueWinsSprite;
+            resultText.text = $"Blue won, at the cost of a life... {reason}";
+        }
+
+        gameOverPanel.SetActive(true);
+        SetAlpha(blackFade, 0f);
+        SetAlpha(backgroundImage, 0f);
+        StartCoroutine(FadeToBlackThenBackground());
+    }
+
+    private void SetAlpha(Image img, float a)
+{
+    Color c = img.color;
+    img.color = new Color(c.r, c.g, c.b, a);
+}
+
+    private IEnumerator FadeToBlackThenBackground()
+    {
+        // Step 1: fade to black
+        float t = 0f;
+        while (t < blackFadeDuration)
+        {
+            t += Time.unscaledDeltaTime;
+            SetAlpha(blackFade, Mathf.Clamp01(t / blackFadeDuration));
+            yield return null;
+        }
+        SetAlpha(blackFade, 1f);
+
+        // Step 2: fade in background image on top of black
+        t = 0f;
+        while (t < bgFadeDuration)
+        {
+            t += Time.unscaledDeltaTime;
+            SetAlpha(backgroundImage, Mathf.Clamp01(t / bgFadeDuration));
+            yield return null;
+        }
+        SetAlpha(backgroundImage, 1f);
+    }
+
+    public void PlayAgain()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void BackToMainMenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("MainMenu");
     }
 
     public void Pause()
