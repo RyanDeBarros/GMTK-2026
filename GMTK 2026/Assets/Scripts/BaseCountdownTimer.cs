@@ -35,9 +35,18 @@ public class BaseCountdownTimer : MonoBehaviour
 
     [SerializeField] private TextAsset timerEffectParameters;
 
+    [SerializeField] private AudioClip goSFX;
+    private AudioSource audioSource;
+
     void Awake()
     {
         Assert.IsNull(instance);
+
+        Assert.IsNotNull(timerEffectParameters);
+        Assert.IsNotNull(goSFX);
+
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.playOnAwake = false;
     }
 
     void Start()
@@ -69,12 +78,16 @@ public class BaseCountdownTimer : MonoBehaviour
         {
             timerEffectQueue.OnCountdownChanged();
 
-            // TODO sfx
-
             if (GetCountdownValue() == CountdownValue.Zero)
             {
                 timerEffectQueue.Deactivate();
                 MatchManager.Instance.SetPhase(MatchPhase.ChooseAction);
+                audioSource.clip = goSFX;
+                audioSource.Play();
+            }
+            else
+            {
+                // TODO normal sfx?
             }
         }
 

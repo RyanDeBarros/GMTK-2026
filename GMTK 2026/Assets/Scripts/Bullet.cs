@@ -24,13 +24,11 @@ public class Bullet : MonoBehaviour
         if (other.gameObject.layer == LayerMask.NameToLayer(playerBodyLayer))
         {
             player.GetHit();
-            // TODO hit sfx
             Despawn();
         }
         else if (other.gameObject.layer == LayerMask.NameToLayer(playerHeadLayer))
         {
             player.GetCritHit();
-            // TODO crit sfx
             Despawn();
         }
     }
@@ -44,7 +42,7 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    private void Despawn()
+    public void Despawn()
     {
         // TODO vfx
         Destroy(gameObject);

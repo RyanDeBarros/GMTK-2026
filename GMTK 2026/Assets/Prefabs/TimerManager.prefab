@@ -45,3 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BaseCountdownTimer
   timerEffectParameters: {fileID: 4900000, guid: 435bede22487761408f476ea688f0e2a, type: 3}
+  goSFX: {fileID: 8300000, guid: 51584717909af9a4dbe827c4c5b7f8d9, type: 3}
