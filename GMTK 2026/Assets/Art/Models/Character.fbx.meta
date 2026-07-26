@@ -3,7 +3,12 @@ guid: 7171053e784292344af7570e6eea1f9b
 ModelImporter:
   serializedVersion: 24501
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Comic Shading Cycles+Evee
+    second: {fileID: 2100000, guid: bcc3683edf17d9b458e93836b4b34ca7, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
