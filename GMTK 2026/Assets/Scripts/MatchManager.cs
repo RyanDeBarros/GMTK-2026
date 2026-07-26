@@ -25,6 +25,7 @@ public class MatchManager : MonoBehaviour
     [SerializeField] private RawImage fadeOverlay;
     [SerializeField] private float slomoDuration = 2.5f;
     [SerializeField] private int chooseActionBPM = 140;
+    [SerializeField] private PauseController pauseController;
 
     [Header("Aiming")]
     [SerializeField] private float aimAngleMin = -8f;
@@ -34,16 +35,32 @@ public class MatchManager : MonoBehaviour
     private float timer = 0f;
     private Song countdownSong;
 
+    private bool paused = false;
+    public bool Paused => paused;
+
     private void Awake()
     {
         Assert.IsNull(instance);
         
         Assert.IsNotNull(fadeOverlay);
+        Assert.IsNotNull(pauseController);
     }
 
     private void Start()
     {
+        CheckCountdownMusicChange();
+        Soundtrack.Play(countdownSong, true);
+
         StartCoroutine(IntroCutscene());
+
+        IEnumerator Transition()
+        {
+            yield return new WaitForSecondsRealtime(60f / introCutsceneBPM);
+            SetPhase(MatchPhase.Countdown);
+        }
+
+        // TODO use AudioSettings.dspTime?
+        StartCoroutine(Transition());
     }
 
     private void Update()
@@ -84,9 +101,6 @@ public class MatchManager : MonoBehaviour
 
     private IEnumerator IntroCutscene()
     {
-        CheckCountdownMusicChange();
-        Soundtrack.Play(countdownSong, true);
-
         float duration = 60f / introCutsceneBPM;
         for (float t = 0f; t < duration; t += Time.deltaTime)
         {
@@ -95,7 +109,6 @@ public class MatchManager : MonoBehaviour
         }
 
         fadeOverlay.color = new(0f, 0f, 0f, 0f);
-        SetPhase(MatchPhase.Countdown);
     }
 
     private float ChooseActionDuration()
@@ -158,5 +171,10 @@ public class MatchManager : MonoBehaviour
         Soundtrack.Play(Song.MatchComplete);
 
         // TODO UI
+    }
+
+    public void Pause()
+    {
+        pauseController.Pause();
     }
 }

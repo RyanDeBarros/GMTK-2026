@@ -34,15 +34,16 @@ public class PlayerStatsController : MonoBehaviour
         healthBar.SetValue(controller.Lives / (float)controller.MaxLives);
 
         // TODO use smooth transitions
-        bool showHUD = MatchManager.Instance.Phase == MatchPhase.Countdown || MatchManager.Instance.Phase == MatchPhase.ChooseAction || MatchManager.Instance.Phase == MatchPhase.Intro;
+        bool showHUD = (MatchManager.Instance.Phase == MatchPhase.Countdown || MatchManager.Instance.Phase == MatchPhase.ChooseAction || MatchManager.Instance.Phase == MatchPhase.Intro)
+            && !MatchManager.Instance.Paused;
         ammoText.gameObject.SetActive(showHUD);
         dodgeText.gameObject.SetActive(showHUD);
         healthBar.gameObject.SetActive(showHUD);
 
         // TODO use tint overlay instead to disable action UI
-        shootPrompt.SetActive(controller.CanShoot());
-        reloadPrompt.SetActive(controller.CanReload());
-        dodgePrompt.SetActive(controller.CanDodge());
+        shootPrompt.SetActive(controller.CanShoot() && !MatchManager.Instance.Paused);
+        reloadPrompt.SetActive(controller.CanReload() && !MatchManager.Instance.Paused);
+        dodgePrompt.SetActive(controller.CanDodge() && !MatchManager.Instance.Paused);
 
         slomoPrompt.SetActive(MatchManager.Instance.Phase == MatchPhase.Slomo && controller.ChosenAction == PlayerAction.Shoot);
     }
