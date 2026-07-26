@@ -90,6 +90,6 @@ public class PlayerInputRouter : MonoBehaviour
 
     private void OnPause(InputAction.CallbackContext _)
     {
-        // TODO make sure to fade out current music track, then fade that back in after resuming
+        MatchManager.Instance.Pause();
     }
 }

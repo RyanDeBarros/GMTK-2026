@@ -61,7 +61,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 3
+  m_SortingOrder: -1
   m_TargetDisplay: 0
 --- !u!114 &4632914604854290329
 MonoBehaviour:
@@ -78,7 +78,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 3840, y: 2160}
+  m_ReferenceResolution: {x: 800, y: 800}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -224,6 +224,7 @@ MonoBehaviour:
   fadeOverlay: {fileID: 2288945330921888014}
   slomoDuration: 2.5
   chooseActionBPM: 140
+  pauseController: {fileID: 0}
   aimAngleMin: -8
   aimAngleMax: 10
   aimSpeed: 30

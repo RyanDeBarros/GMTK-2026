@@ -58,12 +58,12 @@ public class MusicManager : MonoBehaviour
         CacheTrack(BackAudioSource(), BackClipInfo());
     }
 
-    private AudioSource FrontAudioSource()
+    public AudioSource FrontAudioSource()
     {
         return as1Front ? as1 : as2;
     }
 
-    private AudioSource BackAudioSource()
+    public AudioSource BackAudioSource()
     {
         return as1Front ? as2 : as1;
     }
