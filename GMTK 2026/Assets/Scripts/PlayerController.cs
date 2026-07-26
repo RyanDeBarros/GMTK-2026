@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Audio;
 
 public enum PlayerAction
 {
@@ -34,6 +35,12 @@ public class PlayerController : MonoBehaviour
     private PlayerAction chosenAction = PlayerAction.None;
     public PlayerAction ChosenAction => chosenAction;
 
+    [SerializeField] private ClipGroup shootSFX;
+    [SerializeField] private ClipGroup getHitSFX;
+    [SerializeField] private ClipGroup getHitCritSFX;
+
+    private AudioSource audioSource;
+
     private void Awake()
     {
         pistol = GetComponent<Pistol>();
@@ -41,6 +48,13 @@ public class PlayerController : MonoBehaviour
 
         ammo = maxAmmo;
         lives = maxLives;
+
+        Assert.IsNotNull(shootSFX);
+        Assert.IsNotNull(getHitSFX);
+        Assert.IsNotNull(getHitCritSFX);
+
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.playOnAwake = false;
     }
 
     public bool CanSelectAction()
@@ -57,7 +71,6 @@ public class PlayerController : MonoBehaviour
                 chosenAction = PlayerAction.Shoot;
                 Soundtrack.Play(Song.Slomo, true);
                 // TODO animation
-                // TODO sfx
             }
         }
         else if (MatchManager.Instance.Phase == MatchPhase.Countdown)
@@ -67,9 +80,9 @@ public class PlayerController : MonoBehaviour
             chosenAction = PlayerAction.None;
             --ammo;
             pistol.Shoot();
-
+            audioSource.clip = shootSFX.Poll();
+            audioSource.Play();
             // TODO animation
-            // TODO sfx
         }
     }
 
@@ -135,8 +148,9 @@ public class PlayerController : MonoBehaviour
     public void GetHit()
     {
         --lives;
+        audioSource.clip = getHitSFX.Poll();
+        audioSource.Play();
         // TODO animation
-        // TODO sfx
 
         OnTakeDamage();
     }
@@ -144,8 +158,9 @@ public class PlayerController : MonoBehaviour
     public void GetCritHit()
     {
         lives -= 2;
+        audioSource.clip = getHitCritSFX.Poll();
+        audioSource.Play();
         // TODO animation
-        // TODO sfx
 
         OnTakeDamage();
     }
