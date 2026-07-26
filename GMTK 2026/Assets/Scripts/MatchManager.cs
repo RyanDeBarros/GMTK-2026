@@ -2,6 +2,8 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using TMPro;
 
 public enum MatchPhase
 {
@@ -31,6 +33,10 @@ public class MatchManager : MonoBehaviour
     [SerializeField] private float aimAngleMin = -8f;
     [SerializeField] private float aimAngleMax = 10f;
     [SerializeField] private float aimSpeed = 30f;
+    [Header("Game Over UI")]
+    [SerializeField] private GameObject gameOverPanel;
+    [SerializeField] private TMP_Text winnerText;
+    [SerializeField] private TMP_Text livesText;
 
     private float timer = 0f;
     private Song countdownSong;
@@ -169,7 +175,31 @@ public class MatchManager : MonoBehaviour
         phase = MatchPhase.End;
         Soundtrack.Play(Song.MatchComplete);
 
-        // TODO UI
+        int lives1 = PlayerController.Player1.Lives;
+        int lives2 = PlayerController.Player2.Lives;
+
+        string winnerName = lives1 > lives2 ? "Player 1" : "Player 2";
+        int winnerLives = Mathf.Max(lives1, lives2);
+
+        if (winnerText != null)
+            winnerText.text = $"{winnerName} Wins!";
+
+        if (livesText != null)
+            livesText.text = $"Lives Remaining: {winnerLives}";
+
+        gameOverPanel.SetActive(true);
+    }
+
+    public void PlayAgain()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void BackToMainMenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("MainMenu");
     }
 
     public void Pause()
