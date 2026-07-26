@@ -1,0 +1,112 @@
+{
+    "speedUp": [
+        {
+            "probability": 0.2,
+            "whereToStart": [
+                {"value": "10", "weight": 1},
+                {"value": "9", "weight": 1},
+                {"value": "8", "weight": 1},
+                {"value": "7", "weight": 1},
+                {"value": "6", "weight": 2},
+                {"value": "5", "weight": 3},
+                {"value": "4", "weight": 2},
+                {"value": "3", "weight": 1.5},
+                {"value": "2", "weight": 1.5}
+            ],
+            "whereToStartFractions": [
+                {"value": "10", "weight": 1},
+                {"value": "9", "weight": 1},
+                {"value": "8", "weight": 1},
+                {"value": "7", "weight": 1},
+                {"value": "6", "weight": 2},
+                {"value": "5", "weight": 3},
+                {"value": "4", "weight": 2},
+                {"value": "3", "weight": 1.5},
+                {"value": "2", "weight": 1.5},
+                {"value": "1/2", "weight": 2}
+            ],
+            "durationTicks": [
+                {"value": 10, "weight": 1},
+                {"value": 8, "weight": 2},
+                {"value": 6, "weight": 1}
+            ]
+        }
+    ],
+    "slowDown": [
+        {
+            "probability": 0.2,
+            "whereToStart": [
+                {"value": "10", "weight": 1},
+                {"value": "9", "weight": 1},
+                {"value": "8", "weight": 1},
+                {"value": "7", "weight": 1},
+                {"value": "6", "weight": 2},
+                {"value": "5", "weight": 3},
+                {"value": "4", "weight": 2},
+                {"value": "3", "weight": 1.5},
+                {"value": "2", "weight": 1.5}
+            ],
+            "whereToStartFractions": [
+                {"value": "10", "weight": 1},
+                {"value": "9", "weight": 1},
+                {"value": "8", "weight": 1},
+                {"value": "7", "weight": 1},
+                {"value": "6", "weight": 2},
+                {"value": "5", "weight": 3},
+                {"value": "4", "weight": 2},
+                {"value": "3", "weight": 1.5},
+                {"value": "2", "weight": 1.5},
+                {"value": "1/2", "weight": 2}
+            ],
+            "durationTicks": [
+                {"value": 8, "weight": 1},
+                {"value": 5, "weight": 2},
+                {"value": 3, "weight": 1}
+            ]
+        }
+    ],
+    "reverse": [
+        {
+            "probability": 0.2,
+            "whereToStart": [
+                {"value": "1", "weight": 5},
+                {"value": "2", "weight": 3},
+                {"value": "3", "weight": 1}
+            ],
+            "whereToStartFractions": [
+                {"value": "1", "weight": 3},
+                {"value": "1/2", "weight": 1},
+                {"value": "1/3", "weight": 1},
+                {"value": "1/4", "weight": 3}
+            ],
+            "whereToEnd": [
+                {"value": "4", "weight": 5},
+                {"value": "5", "weight": 3},
+                {"value": "6", "weight": 1}
+            ],
+            "whereToEndFractions": [
+                {"value": "2", "weight": 1},
+                {"value": "3", "weight": 1},
+                {"value": "4", "weight": 1}
+            ]
+        }
+    ],
+    "fractions": [
+        {
+            "probability": 0.2
+        }
+    ],
+    "fakeout": [
+        {
+            "probability": 0.2,
+            "jumpTo": [
+                {"value": "1", "weight": 2},
+                {"value": "2", "weight": 1},
+                {"value": "3", "weight": 3},
+                {"value": "4", "weight": 4},
+                {"value": "5", "weight": 1},
+                {"value": "10", "weight": 1}
+            ]
+        }
+    ]
+}

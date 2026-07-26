@@ -1,68 +1,158 @@
 using System;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class BaseCountdownTimer : MonoBehaviour
 {
-    public static readonly int maxIndex = 10;
+    private static BaseCountdownTimer instance;
+    public static BaseCountdownTimer Instance => instance;
 
+    public static readonly float slowBPM = 35f;
     public static readonly float normalBPM = 70f;
     public static readonly float fastBPM = 140f;
 
-    private float timer = 0;
-
     private enum BPMRate
     {
+        Slow,
         Normal,
         Fast
     }
 
-    private int currentBPMIndex = 0;
+    private readonly ModifiableValue<CountdownValue> countdownValue = new();
+    private float timerDebt = 0f;
+
+    public class Settings
+    {
+        public bool fractions = false;
+        public bool reverse = false;
+        public int bpmIndex = (int)BPMRate.Normal;
+    }
+
+    private readonly Settings settings = new();
+
+    private readonly TimerEffectQueue timerEffectQueue = new();
+    private bool newPass = false;
+
+    [SerializeField] private TextAsset timerEffectParameters;
+
+    void Awake()
+    {
+        Assert.IsNull(instance);
+    }
 
     void Start()
     {
-        SetTimer(maxIndex);
+        TimerEffectConfigLoader.Load(timerEffectParameters).Configure(timerEffectQueue);
     }
 
     void Update()
     {
-        SetTimer(timer - Time.deltaTime * CurrentBPM() / 60f);
+        if (MatchManager.Instance.Phase != MatchPhase.Countdown)
+            return;
+
+        if (newPass)
+        {
+            newPass = false;
+            timerEffectQueue.Deactivate();
+            timerEffectQueue.Activate();
+        }
+
+        timerDebt += Time.deltaTime * CurrentBPM() / 60f;
+        while (timerDebt >= 1f)
+        {
+            --timerDebt;
+            countdownValue.Value = CountdownValueUtil.Next(GetCountdownValue(), settings.fractions, settings.reverse);
+            MatchManager.Instance.SyncCountdownMusic();
+        }
+
+        if (countdownValue.Modified())
+        {
+            timerEffectQueue.OnCountdownChanged();
+
+            // TODO sfx
+
+            if (GetCountdownValue() == CountdownValue.Zero)
+            {
+                timerEffectQueue.Deactivate();
+                MatchManager.Instance.SetPhase(MatchPhase.ChooseAction);
+            }
+        }
+
+        countdownValue.Consume();
     }
 
-    private void SetTimer(float tm)
+    private void OnEnable()
     {
-        int oldCountdownValue = CurrentCountdownValue();
-        timer = Mathf.Clamp(tm, 0f, maxIndex);
-        if (CurrentCountdownValue() != oldCountdownValue)
-            OnCountdownValueChanged();
+        Assert.IsNull(instance);
+        instance = this;
+    }
+
+    private void OnDisable()
+    {
+        Assert.IsTrue(instance == this);
+        instance = null;
+    }
+
+    public void Restart()
+    {
+        timerDebt = 0f;
+        countdownValue.Value = CountdownValue.Ten;
+        countdownValue.Consume();
+        NewPass();
+    }
+
+    public void NewPass()
+    {
+        newPass = true;
     }
 
     public void SpeedUp()
     {
-        ++currentBPMIndex;
+        ++settings.bpmIndex;
     }
 
     public void SlowDown()
     {
-        --currentBPMIndex;
+        --settings.bpmIndex;
+    }
+
+    public void SetFractions(bool fractions)
+    {
+        settings.fractions = fractions;
+    }
+
+    public bool FractionsEnabled()
+    {
+        return settings.fractions;
+    }
+
+    public void SetReverse(bool reverse)
+    {
+        settings.reverse = reverse;
+    }
+
+    public bool ReverseEnabled()
+    {
+        return settings.reverse;
     }
 
     public float CurrentBPM()
     {
-        return ((BPMRate)Math.Clamp(currentBPMIndex, (int)BPMRate.Normal, (int)BPMRate.Fast)) switch {
+        return (BPMRate)Math.Clamp(settings.bpmIndex, (int)BPMRate.Slow, (int)BPMRate.Fast) switch {
+            BPMRate.Slow => slowBPM,
             BPMRate.Normal => normalBPM,
             BPMRate.Fast => fastBPM,
             _ => throw new NotImplementedException()
         };
     }
 
-    public int CurrentCountdownValue()
+    public CountdownValue GetCountdownValue()
     {
-        return Mathf.CeilToInt(timer);
+        return countdownValue.Value;
     }
 
-    private void OnCountdownValueChanged()
+    public void DirectSetCountdownValue(CountdownValue value)
     {
-        CountdownDisplay.Instance.SetCountdownValue(CurrentCountdownValue());
-        // TODO sfx
+        countdownValue.Value = value;
     }
 }
