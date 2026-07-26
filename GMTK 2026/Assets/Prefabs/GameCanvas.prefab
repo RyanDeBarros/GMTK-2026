@@ -4002,10 +4002,12 @@ MonoBehaviour:
   dodgeText: {fileID: 3716404923582856}
   dodgeRoot: {fileID: 2199264246834094558}
   healthBar: {fileID: 1361258022523615547}
-  shootPrompt: {fileID: 3345741892093367415}
-  reloadPrompt: {fileID: 2020264861179703811}
-  dodgePrompt: {fileID: 2988877383703564377}
+  shootPrompt: {fileID: 8362116688334856594}
+  reloadPrompt: {fileID: 4831175978338299306}
+  dodgePrompt: {fileID: 1804338043170116181}
   slomoPrompt: {fileID: 7973991564116897657}
+  activeBg: {fileID: 21300000, guid: b8ddeed25c611184288284d663f48343, type: 3}
+  inactiveBg: {fileID: 21300000, guid: aa05fb837534c024bbdcb2d1e63ce10b, type: 3}
 --- !u!1 &6694819932324653712
 GameObject:
   m_ObjectHideFlags: 0
@@ -4484,10 +4486,12 @@ MonoBehaviour:
   dodgeText: {fileID: 7276237829223017683}
   dodgeRoot: {fileID: 5655245090021313679}
   healthBar: {fileID: 6427703123236138831}
-  shootPrompt: {fileID: 3299996411316848806}
-  reloadPrompt: {fileID: 1731661798344456551}
-  dodgePrompt: {fileID: 3704343574768188444}
+  shootPrompt: {fileID: 571450541992687889}
+  reloadPrompt: {fileID: 5837209420159736469}
+  dodgePrompt: {fileID: 4626011433277643821}
   slomoPrompt: {fileID: 1733838526654069487}
+  activeBg: {fileID: 21300000, guid: d4e2817dbbf4cd64ba7b09f275adde1e, type: 3}
+  inactiveBg: {fileID: 21300000, guid: 643bdff11013cbd4f8db21a394905f62, type: 3}
 --- !u!1 &7946921396990847967
 GameObject:
   m_ObjectHideFlags: 0
