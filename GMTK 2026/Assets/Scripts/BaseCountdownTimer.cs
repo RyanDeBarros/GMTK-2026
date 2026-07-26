@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.Assertions;
-using UnityEngine.Audio;
+using UnityEngine.Events;
 
 public class BaseCountdownTimer : MonoBehaviour
 {
@@ -42,6 +42,8 @@ public class BaseCountdownTimer : MonoBehaviour
 
     private AudioSource tickAudioSource;
     private AudioSource goAudioSource;
+
+    public UnityEvent tick;
 
     void Awake()
     {
@@ -94,6 +96,8 @@ public class BaseCountdownTimer : MonoBehaviour
             }
             else
                 PlayTickSFX();
+
+            tick?.Invoke();
         }
 
         countdownValue.Consume();
