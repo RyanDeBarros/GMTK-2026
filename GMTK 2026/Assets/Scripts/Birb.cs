@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class Birb : MonoBehaviour
 {
@@ -26,6 +27,18 @@ public class Birb : MonoBehaviour
     Phase phase = Phase.Offscreen;
     float waitTime = 0f;
 
+    [SerializeField] private AudioClip getHitSFX;
+    private AudioSource audioSource;
+    private bool alreadyHit = false;
+
+    private void Awake()
+    {
+        Assert.IsNotNull(getHitSFX);
+
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.playOnAwake = false;
+    }
+
     private void Start()
     {
         transform.position = new(transform.position.x, offscreenPositionY, transform.position.z);
@@ -40,7 +53,10 @@ public class Birb : MonoBehaviour
                 if (waitTime > 0f)
                     waitTime -= DeltaTime();
                 if (waitTime <= 0f && (MatchManager.Instance.Phase == MatchPhase.Countdown || MatchManager.Instance.Phase == MatchPhase.ChooseAction))
+                {
                     phase = Phase.FlyingDown;
+                    alreadyHit = false;
+                }
 
                 break;
 
@@ -100,7 +116,13 @@ public class Birb : MonoBehaviour
         bullet.owner.GetHit();
         bullet.Despawn();
 
-        phase = Phase.FlyingOff;
+        if (!alreadyHit)
+        {
+            alreadyHit = true;
+            phase = Phase.FlyingOff;
+            audioSource.clip = getHitSFX;
+            audioSource.Play();
+        }
     }
 
     private void GenerateOffscreenWait()
