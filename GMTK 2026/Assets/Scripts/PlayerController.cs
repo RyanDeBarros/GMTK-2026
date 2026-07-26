@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Audio;
 
 public enum PlayerAction
 {
@@ -34,6 +35,17 @@ public class PlayerController : MonoBehaviour
     private PlayerAction chosenAction = PlayerAction.None;
     public PlayerAction ChosenAction => chosenAction;
 
+    private bool dodging = false;
+    public bool Dodging => dodging;
+
+    [SerializeField] private ClipGroup shootSFX;
+    [SerializeField] private ClipGroup getHitSFX;
+    [SerializeField] private ClipGroup getHitCritSFX;
+    [SerializeField] private AudioClip reloadSFX;
+    [SerializeField] private AudioClip dodgeSFX;
+
+    private AudioSource audioSource;
+
     private void Awake()
     {
         pistol = GetComponent<Pistol>();
@@ -41,6 +53,15 @@ public class PlayerController : MonoBehaviour
 
         ammo = maxAmmo;
         lives = maxLives;
+
+        Assert.IsNotNull(shootSFX);
+        Assert.IsNotNull(getHitSFX);
+        Assert.IsNotNull(getHitCritSFX);
+        Assert.IsNotNull(reloadSFX);
+        Assert.IsNotNull(dodgeSFX);
+
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.playOnAwake = false;
     }
 
     public bool CanSelectAction()
@@ -57,7 +78,6 @@ public class PlayerController : MonoBehaviour
                 chosenAction = PlayerAction.Shoot;
                 Soundtrack.Play(Song.Slomo, true);
                 // TODO animation
-                // TODO sfx
             }
         }
         else if (MatchManager.Instance.Phase == MatchPhase.Countdown)
@@ -67,9 +87,9 @@ public class PlayerController : MonoBehaviour
             chosenAction = PlayerAction.None;
             --ammo;
             pistol.Shoot();
-
+            audioSource.clip = shootSFX.Poll();
+            audioSource.Play();
             // TODO animation
-            // TODO sfx
         }
     }
 
@@ -91,9 +111,9 @@ public class PlayerController : MonoBehaviour
             {
                 chosenAction = PlayerAction.Reload;
                 ++ammo;
-
+                audioSource.clip = reloadSFX;
+                audioSource.Play();
                 // TODO animation
-                // TODO sfx
             }
         }
         else if (MatchManager.Instance.Phase == MatchPhase.Countdown)
@@ -112,10 +132,11 @@ public class PlayerController : MonoBehaviour
             if (CanDodge())
             {
                 chosenAction = PlayerAction.Dodge;
+                dodging = true;
                 dodgeCooldown = dodgeCooldownTurns;
-
+                audioSource.clip = dodgeSFX;
+                audioSource.Play();
                 // TODO animation
-                // TODO sfx
             }
         }
         else if (MatchManager.Instance.Phase == MatchPhase.Countdown)
@@ -127,16 +148,12 @@ public class PlayerController : MonoBehaviour
         return CanSelectAction() && dodgeCooldown <= 0;
     }
 
-    public bool IsDodging()
-    {
-        return chosenAction == PlayerAction.Dodge;
-    }
-
     public void GetHit()
     {
         --lives;
+        audioSource.clip = getHitSFX.Poll(); // TODO if this is coming from pressing before Go!, play buzzer sfx instead
+        audioSource.Play();
         // TODO animation
-        // TODO sfx
 
         OnTakeDamage();
     }
@@ -144,8 +161,9 @@ public class PlayerController : MonoBehaviour
     public void GetCritHit()
     {
         lives -= 2;
+        audioSource.clip = getHitCritSFX.Poll();
+        audioSource.Play();
         // TODO animation
-        // TODO sfx
 
         OnTakeDamage();
     }
@@ -153,7 +171,7 @@ public class PlayerController : MonoBehaviour
     private void OnTakeDamage()
     {
         if (IsDead())
-            MatchManager.Instance.SetPhase(MatchPhase.End);
+            MatchManager.Instance.MatchComplete();
         else
             MatchManager.Instance.CheckCountdownMusicChange();
     }
@@ -169,5 +187,10 @@ public class PlayerController : MonoBehaviour
 
         if (dodgeCooldown > 0)
             --dodgeCooldown;
+    }
+
+    public void StartChooseActionPhase()
+    {
+        dodging = false;
     }
 }

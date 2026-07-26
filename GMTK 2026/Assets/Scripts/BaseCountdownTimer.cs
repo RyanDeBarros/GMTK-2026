@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Audio;
 
 public class BaseCountdownTimer : MonoBehaviour
 {
@@ -35,9 +36,24 @@ public class BaseCountdownTimer : MonoBehaviour
 
     [SerializeField] private TextAsset timerEffectParameters;
 
+    [SerializeField] private AudioClip tickSFX;
+    [SerializeField] private AudioClip goSFX;
+    [SerializeField] private float maxTickPitchIncrease = 0.4f;
+
+    private AudioSource tickAudioSource;
+    private AudioSource goAudioSource;
+
     void Awake()
     {
         Assert.IsNull(instance);
+
+        Assert.IsNotNull(timerEffectParameters);
+        Assert.IsNotNull(goSFX);
+
+        tickAudioSource = gameObject.AddComponent<AudioSource>();
+        tickAudioSource.playOnAwake = false;
+        goAudioSource = gameObject.AddComponent<AudioSource>();
+        goAudioSource.playOnAwake = false;
     }
 
     void Start()
@@ -69,13 +85,15 @@ public class BaseCountdownTimer : MonoBehaviour
         {
             timerEffectQueue.OnCountdownChanged();
 
-            // TODO sfx
-
             if (GetCountdownValue() == CountdownValue.Zero)
             {
                 timerEffectQueue.Deactivate();
                 MatchManager.Instance.SetPhase(MatchPhase.ChooseAction);
+                goAudioSource.clip = goSFX;
+                goAudioSource.Play();
             }
+            else
+                PlayTickSFX();
         }
 
         countdownValue.Consume();
@@ -98,7 +116,15 @@ public class BaseCountdownTimer : MonoBehaviour
         timerDebt = 0f;
         countdownValue.Value = CountdownValue.Ten;
         countdownValue.Consume();
+        PlayTickSFX();
         NewPass();
+    }
+
+    private void PlayTickSFX()
+    {
+        tickAudioSource.clip = tickSFX;
+        tickAudioSource.pitch = 1f + CountdownValueUtil.Alpha(GetCountdownValue()) * maxTickPitchIncrease;
+        tickAudioSource.Play();
     }
 
     public void NewPass()

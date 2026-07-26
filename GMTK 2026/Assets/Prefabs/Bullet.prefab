@@ -123,6 +123,7 @@ GameObject:
   - component: {fileID: 6226674029133788979}
   - component: {fileID: 5885698407589674520}
   - component: {fileID: 1839800028836174061}
+  - component: {fileID: 582094799844647443}
   m_Layer: 0
   m_Name: Bullet
   m_TagString: Untagged
@@ -160,6 +161,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Bullet
   speed: 100
   bulletBoundsLayer: Bullet Bounds
+  playerBodyLayer: Player Body
+  playerHeadLayer: Player Head
+  missSFX: {fileID: 582094799844647443}
+  owner: {fileID: 0}
+  direction: {x: 0, y: 0, z: 0}
 --- !u!54 &1839800028836174061
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -187,3 +193,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 8
   m_CollisionDetection: 3
+--- !u!114 &582094799844647443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2413592204607015097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 138bfecf6b621a748834dcd6d4ba3ce1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ClipGroup
+  clips:
+  - {fileID: 8300000, guid: 966a651ed1c824c4d9ba78cc9dc53906, type: 3}
+  - {fileID: 8300000, guid: 35f900cdd844cf545a0989230dc5bedd, type: 3}
+  - {fileID: 8300000, guid: 63779e88ac5e873459feb1f464ea5f70, type: 3}

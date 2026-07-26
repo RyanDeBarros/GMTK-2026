@@ -34,9 +34,10 @@ public class PlayerStatsController : MonoBehaviour
         healthBar.SetValue(controller.Lives / (float)controller.MaxLives);
 
         // TODO use smooth transitions
-        ammoText.gameObject.SetActive(MatchManager.Instance.Phase == MatchPhase.Countdown || MatchManager.Instance.Phase == MatchPhase.ChooseAction);
-        dodgeText.gameObject.SetActive(MatchManager.Instance.Phase == MatchPhase.Countdown || MatchManager.Instance.Phase == MatchPhase.ChooseAction);
-        healthBar.gameObject.SetActive(MatchManager.Instance.Phase == MatchPhase.Countdown || MatchManager.Instance.Phase == MatchPhase.ChooseAction);
+        bool showHUD = MatchManager.Instance.Phase == MatchPhase.Countdown || MatchManager.Instance.Phase == MatchPhase.ChooseAction || MatchManager.Instance.Phase == MatchPhase.Intro;
+        ammoText.gameObject.SetActive(showHUD);
+        dodgeText.gameObject.SetActive(showHUD);
+        healthBar.gameObject.SetActive(showHUD);
 
         // TODO use tint overlay instead to disable action UI
         shootPrompt.SetActive(controller.CanShoot());
