@@ -25,6 +25,7 @@ public class MatchManager : MonoBehaviour
     [SerializeField] private RawImage fadeOverlay;
     [SerializeField] private float slomoDuration = 2.5f;
     [SerializeField] private int chooseActionBPM = 140;
+    [SerializeField] private PauseController pauseController;
 
     [Header("Aiming")]
     [SerializeField] private float aimAngleMin = -8f;
@@ -34,11 +35,15 @@ public class MatchManager : MonoBehaviour
     private float timer = 0f;
     private Song countdownSong;
 
+    private bool paused = false;
+    public bool Paused => paused;
+
     private void Awake()
     {
         Assert.IsNull(instance);
         
         Assert.IsNotNull(fadeOverlay);
+        Assert.IsNotNull(pauseController);
     }
 
     private void Start()
@@ -158,5 +163,10 @@ public class MatchManager : MonoBehaviour
         Soundtrack.Play(Song.MatchComplete);
 
         // TODO UI
+    }
+
+    public void Pause()
+    {
+        pauseController.gameObject.SetActive(true);
     }
 }

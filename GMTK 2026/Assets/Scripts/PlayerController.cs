@@ -10,6 +10,7 @@ public enum PlayerAction
     Dodge
 }
 
+// TODO pan audio sources to left/right for P1/P2?
 public class PlayerController : MonoBehaviour
 {
     public static PlayerController Player1;
