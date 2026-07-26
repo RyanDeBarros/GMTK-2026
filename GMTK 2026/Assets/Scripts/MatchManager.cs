@@ -20,6 +20,7 @@ public class MatchManager : MonoBehaviour
 
     [Header("Game Phase")]
     [SerializeField] private float slomoDuration = 2.5f;
+    [SerializeField] private int chooseActionBPM = 140;
 
     [Header("Aiming")]
     [SerializeField] private float aimAngleMin = -8f;
@@ -82,7 +83,7 @@ public class MatchManager : MonoBehaviour
 
     private float ChooseActionDuration()
     {
-        return 60f / BaseCountdownTimer.Instance.CurrentBPM();
+        return 60f / chooseActionBPM;
     }
 
     public void SetPhase(MatchPhase phase)
