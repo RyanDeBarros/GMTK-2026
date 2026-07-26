@@ -34,9 +34,6 @@ public class MatchManager : MonoBehaviour
     [SerializeField] private float aimAngleMax = 10f;
     [SerializeField] private float aimSpeed = 30f;
     [Header("Game Over UI")]
-    [SerializeField] private TMP_Text winnerText;
-    [SerializeField] private TMP_Text livesText;
-
     [Header("Game Over UI")]
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private Image winnerImage;
@@ -44,6 +41,12 @@ public class MatchManager : MonoBehaviour
     [SerializeField] private Sprite blueWinsSprite;
     [SerializeField] private Sprite noWinnerSprite;
     [SerializeField] private TMP_Text resultText;
+    [SerializeField] private CanvasGroup gameOverCanvasGroup;
+    [SerializeField] private float fadeInDuration = 1f;
+    [SerializeField] private Image blackFade;
+    [SerializeField] private Image backgroundImage;
+    [SerializeField] private float blackFadeDuration = 0.5f;
+    [SerializeField] private float bgFadeDuration = 0.8f;
 
     private float timer = 0f;
     private Song countdownSong;
@@ -204,6 +207,38 @@ public class MatchManager : MonoBehaviour
         }
 
         gameOverPanel.SetActive(true);
+        SetAlpha(blackFade, 0f);
+        SetAlpha(backgroundImage, 0f);
+        StartCoroutine(FadeToBlackThenBackground());
+    }
+
+    private void SetAlpha(Image img, float a)
+{
+    Color c = img.color;
+    img.color = new Color(c.r, c.g, c.b, a);
+}
+
+    private IEnumerator FadeToBlackThenBackground()
+    {
+        // Step 1: fade to black
+        float t = 0f;
+        while (t < blackFadeDuration)
+        {
+            t += Time.unscaledDeltaTime;
+            SetAlpha(blackFade, Mathf.Clamp01(t / blackFadeDuration));
+            yield return null;
+        }
+        SetAlpha(blackFade, 1f);
+
+        // Step 2: fade in background image on top of black
+        t = 0f;
+        while (t < bgFadeDuration)
+        {
+            t += Time.unscaledDeltaTime;
+            SetAlpha(backgroundImage, Mathf.Clamp01(t / bgFadeDuration));
+            yield return null;
+        }
+        SetAlpha(backgroundImage, 1f);
     }
 
     public void PlayAgain()
