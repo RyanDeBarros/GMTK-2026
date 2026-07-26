@@ -37,8 +37,9 @@ public class Birb : MonoBehaviour
         switch (phase)
         {
             case Phase.Offscreen:
-                waitTime -= DeltaTime();
-                if (waitTime <= 0f)
+                if (waitTime > 0f)
+                    waitTime -= DeltaTime();
+                if (waitTime <= 0f && (MatchManager.Instance.Phase == MatchPhase.Countdown || MatchManager.Instance.Phase == MatchPhase.ChooseAction))
                     phase = Phase.FlyingDown;
 
                 break;
