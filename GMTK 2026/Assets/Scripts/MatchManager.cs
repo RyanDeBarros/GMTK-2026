@@ -129,4 +129,12 @@ public class MatchManager : MonoBehaviour
         if (phase == MatchPhase.Countdown)
             Soundtrack.Play(countdownSong, true);
     }
+
+    public void MatchComplete()
+    {
+        phase = MatchPhase.End;
+        Soundtrack.Play(Song.MatchComplete);
+
+        // TODO UI
+    }
 }

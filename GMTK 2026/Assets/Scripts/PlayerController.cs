@@ -168,7 +168,7 @@ public class PlayerController : MonoBehaviour
     private void OnTakeDamage()
     {
         if (IsDead())
-            MatchManager.Instance.SetPhase(MatchPhase.End);
+            MatchManager.Instance.MatchComplete();
         else
             MatchManager.Instance.CheckCountdownMusicChange();
     }
