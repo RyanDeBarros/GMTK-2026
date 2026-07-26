@@ -38,6 +38,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private ClipGroup shootSFX;
     [SerializeField] private ClipGroup getHitSFX;
     [SerializeField] private ClipGroup getHitCritSFX;
+    [SerializeField] private AudioClip reloadSFX;
 
     private AudioSource audioSource;
 
@@ -52,6 +53,7 @@ public class PlayerController : MonoBehaviour
         Assert.IsNotNull(shootSFX);
         Assert.IsNotNull(getHitSFX);
         Assert.IsNotNull(getHitCritSFX);
+        Assert.IsNotNull(reloadSFX);
 
         audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.playOnAwake = false;
@@ -104,9 +106,9 @@ public class PlayerController : MonoBehaviour
             {
                 chosenAction = PlayerAction.Reload;
                 ++ammo;
-
+                audioSource.clip = reloadSFX;
+                audioSource.Play();
                 // TODO animation
-                // TODO sfx
             }
         }
         else if (MatchManager.Instance.Phase == MatchPhase.Countdown)

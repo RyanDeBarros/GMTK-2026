@@ -193,6 +193,7 @@ MonoBehaviour:
   shootSFX: {fileID: 4394586141094607526}
   getHitSFX: {fileID: 5556723517301980345}
   getHitCritSFX: {fileID: 8033673667634497224}
+  reloadSFX: {fileID: 8300000, guid: 038d3410b7ac8dd4bb68f9a0c52a09c3, type: 3}
 --- !u!114 &644515714159540778
 MonoBehaviour:
   m_ObjectHideFlags: 0
