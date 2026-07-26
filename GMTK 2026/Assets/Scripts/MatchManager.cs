@@ -1,5 +1,7 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.UI;
 
 public enum MatchPhase
 {
@@ -19,6 +21,8 @@ public class MatchManager : MonoBehaviour
     public MatchPhase Phase => phase;
 
     [Header("Game Phase")]
+    [SerializeField] private int introCutsceneBPM = 35;
+    [SerializeField] private RawImage fadeOverlay;
     [SerializeField] private float slomoDuration = 2.5f;
     [SerializeField] private int chooseActionBPM = 140;
 
@@ -33,16 +37,13 @@ public class MatchManager : MonoBehaviour
     private void Awake()
     {
         Assert.IsNull(instance);
+        
+        Assert.IsNotNull(fadeOverlay);
     }
 
     private void Start()
     {
-        CheckCountdownMusicChange();
-        Soundtrack.Play(countdownSong, true);
-
-        // TODO intro cutscene first
-
-        SetPhase(MatchPhase.Countdown);
+        StartCoroutine(IntroCutscene());
     }
 
     private void Update()
@@ -81,6 +82,22 @@ public class MatchManager : MonoBehaviour
         instance = null;
     }
 
+    private IEnumerator IntroCutscene()
+    {
+        CheckCountdownMusicChange();
+        Soundtrack.Play(countdownSong, true);
+
+        float duration = 60f / introCutsceneBPM;
+        for (float t = 0f; t < duration; t += Time.deltaTime)
+        {
+            fadeOverlay.color = new(0f, 0f, 0f, 1f - t / duration);
+            yield return null;
+        }
+
+        fadeOverlay.color = new(0f, 0f, 0f, 0f);
+        SetPhase(MatchPhase.Countdown);
+    }
+
     private float ChooseActionDuration()
     {
         return 60f / chooseActionBPM;
@@ -98,7 +115,11 @@ public class MatchManager : MonoBehaviour
         }
 
         if (phase == MatchPhase.ChooseAction)
+        {
+            PlayerController.Player1.StartChooseActionPhase();
+            PlayerController.Player2.StartChooseActionPhase();
             timer = 0f;
+        }
 
         if (phase == MatchPhase.Slomo)
         {
@@ -129,5 +150,13 @@ public class MatchManager : MonoBehaviour
     {
         if (phase == MatchPhase.Countdown)
             Soundtrack.Play(countdownSong, true);
+    }
+
+    public void MatchComplete()
+    {
+        phase = MatchPhase.End;
+        Soundtrack.Play(Song.MatchComplete);
+
+        // TODO UI
     }
 }

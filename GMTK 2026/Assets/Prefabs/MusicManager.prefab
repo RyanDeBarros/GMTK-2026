@@ -62,3 +62,5 @@ MonoBehaviour:
   countdownFast: {fileID: 8300000, guid: 6b34688083884234aa31735a4901a550, type: 3}
   countdownSlow: {fileID: 8300000, guid: 1870e1ad2bed3894ab31b529b1f43ae5, type: 3}
   slomo: {fileID: 8300000, guid: 20756a8c95a1da546b3fd27206ce0e41, type: 3}
+  mainMenu: {fileID: 8300000, guid: 4101de8f427e0624e9890629c83bf91a, type: 3}
+  matchComplete: {fileID: 8300000, guid: 7b3c24731ac6cd8458e966078fd4d017, type: 3}

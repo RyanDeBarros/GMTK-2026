@@ -98,7 +98,7 @@ public class Birb : MonoBehaviour
             return;
 
         bullet.owner.GetHit();
-        Destroy(bullet.gameObject);
+        bullet.Despawn();
 
         phase = Phase.FlyingOff;
     }
