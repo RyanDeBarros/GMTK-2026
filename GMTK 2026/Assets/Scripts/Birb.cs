@@ -16,6 +16,17 @@ public class Birb : MonoBehaviour
     [SerializeField] private float offsetScreenWaitMax = 20f;
     [SerializeField] private float offsetScreenWaitMedian = 12f;
 
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private Sprite[] idleFrames;
+    [SerializeField] private Sprite[] flyingFrames;
+    [SerializeField] private float idleAnimationRate = 2f;
+    [SerializeField] private float flyingAnimationRate = 5f;
+    
+    private float animationDebt = 0f;
+    private int frameIndex = 0;
+    private Sprite[] frames;
+    private float animationRate;
+
     private enum Phase
     {
         Offscreen,
@@ -34,9 +45,15 @@ public class Birb : MonoBehaviour
     private void Awake()
     {
         Assert.IsNotNull(getHitSFX);
+        Assert.IsNotNull(spriteRenderer);
+        Assert.IsTrue(idleFrames.Length > 0);
+        Assert.IsTrue(flyingFrames.Length > 0);
 
         audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.playOnAwake = false;
+
+        frames = idleFrames;
+        animationRate = idleAnimationRate;
     }
 
     private void Start()
@@ -47,16 +64,22 @@ public class Birb : MonoBehaviour
 
     private void Update()
     {
+        animationDebt += Time.deltaTime * animationRate;
+        while (animationDebt > 1f)
+        {
+            --animationDebt;
+            ++frameIndex;
+            frameIndex %= frames.Length;
+            spriteRenderer.sprite = frames[frameIndex];
+        }
+
         switch (phase)
         {
             case Phase.Offscreen:
                 if (waitTime > 0f)
                     waitTime -= DeltaTime();
                 if (waitTime <= 0f && (MatchManager.Instance.Phase == MatchPhase.Countdown || MatchManager.Instance.Phase == MatchPhase.ChooseAction))
-                {
-                    phase = Phase.FlyingDown;
-                    alreadyHit = false;
-                }
+                    SetPhase(Phase.FlyingDown);
 
                 break;
 
@@ -68,7 +91,7 @@ public class Birb : MonoBehaviour
 
                     if (pos.y == perchPositionY)
                     {
-                        phase = Phase.Perching;
+                        SetPhase(Phase.Perching);
                         waitTime = Mathf.Lerp(perchDurationMin, perchDurationMax, Random.value);
                     }
                 }
@@ -78,7 +101,7 @@ public class Birb : MonoBehaviour
             case Phase.Perching:
                 waitTime -= DeltaTime();
                 if (waitTime <= 0f)
-                    phase = Phase.FlyingOff;
+                    SetPhase(Phase.FlyingOff);
 
                 break;
 
@@ -90,7 +113,7 @@ public class Birb : MonoBehaviour
 
                     if (pos.y == offscreenPositionY)
                     {
-                        phase = Phase.Offscreen;
+                        SetPhase(Phase.Offscreen);
                         GenerateOffscreenWait();
                     }
                 }
@@ -119,10 +142,37 @@ public class Birb : MonoBehaviour
         if (!alreadyHit)
         {
             alreadyHit = true;
-            phase = Phase.FlyingOff;
+            SetPhase(Phase.FlyingOff);
             audioSource.clip = getHitSFX;
             audioSource.Play();
         }
+    }
+
+    private void SetPhase(Phase phase)
+    {
+        this.phase = phase;
+        
+        if (phase == Phase.FlyingOff)
+            spriteRenderer.flipX = true;
+
+        if (phase == Phase.FlyingDown)
+        {
+            spriteRenderer.flipX = false;
+            alreadyHit = false;
+        }
+
+        if (phase == Phase.FlyingOff || phase == Phase.FlyingDown)
+        {
+            frames = flyingFrames;
+            animationRate = flyingAnimationRate;
+        }
+        else
+        {
+            frames = idleFrames;
+            animationRate = idleAnimationRate;
+        }
+
+        frameIndex %= frames.Length;
     }
 
     private void GenerateOffscreenWait()

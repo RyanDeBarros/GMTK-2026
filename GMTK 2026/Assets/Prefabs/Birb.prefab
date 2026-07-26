@@ -55,6 +55,19 @@ MonoBehaviour:
   offsetScreenWaitMin: 3
   offsetScreenWaitMax: 20
   offsetScreenWaitMedian: 12
+  spriteRenderer: {fileID: 1105138547199264384}
+  idleFrames:
+  - {fileID: 21300000, guid: 4e149ada4626b3146af933454b36ef47, type: 3}
+  - {fileID: 21300000, guid: c25a7973a91d4db4d8d24425acc21884, type: 3}
+  flyingFrames:
+  - {fileID: 21300000, guid: 080e42dfa601f864aa489bd73709ae44, type: 3}
+  - {fileID: 21300000, guid: 08f3f5f9e643d5348be238a52945302b, type: 3}
+  - {fileID: 21300000, guid: ab4f732ad7f049a4fa9acc664113a1dd, type: 3}
+  - {fileID: 21300000, guid: be1156255bb557740bdca273a45221f7, type: 3}
+  - {fileID: 21300000, guid: ab4f732ad7f049a4fa9acc664113a1dd, type: 3}
+  - {fileID: 21300000, guid: 08f3f5f9e643d5348be238a52945302b, type: 3}
+  - {fileID: 21300000, guid: 080e42dfa601f864aa489bd73709ae44, type: 3}
+  animationRate: 1
   getHitSFX: {fileID: 8300000, guid: 58c22937ad579ce43a5c123c03f3af24, type: 3}
 --- !u!54 &1027427016595290454
 Rigidbody:
