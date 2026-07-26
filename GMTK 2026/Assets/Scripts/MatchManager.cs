@@ -59,7 +59,6 @@ public class MatchManager : MonoBehaviour
             SetPhase(MatchPhase.Countdown);
         }
 
-        // TODO use AudioSettings.dspTime?
         StartCoroutine(Transition());
     }
 

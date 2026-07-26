@@ -44,6 +44,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private ClipGroup getHitCritSFX;
     [SerializeField] private AudioClip reloadSFX;
     [SerializeField] private AudioClip dodgeSFX;
+    [SerializeField] private AudioSource tooEarlyBuzzer;
+    [SerializeField] private AudioSource unavailableAction;
 
     private AudioSource audioSource;
 
@@ -60,6 +62,8 @@ public class PlayerController : MonoBehaviour
         Assert.IsNotNull(getHitCritSFX);
         Assert.IsNotNull(reloadSFX);
         Assert.IsNotNull(dodgeSFX);
+        Assert.IsNotNull(tooEarlyBuzzer);
+        Assert.IsNotNull(unavailableAction);
 
         audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.playOnAwake = false;
@@ -80,9 +84,14 @@ public class PlayerController : MonoBehaviour
                 Soundtrack.Play(Song.Slomo, true);
                 // TODO animation
             }
+            else
+                unavailableAction.Play();
         }
         else if (MatchManager.Instance.Phase == MatchPhase.Countdown)
+        {
+            tooEarlyBuzzer.Play();
             GetHit();
+        }
         else if (MatchManager.Instance.Phase == MatchPhase.Slomo && chosenAction == PlayerAction.Shoot)
         {
             chosenAction = PlayerAction.None;
@@ -116,9 +125,14 @@ public class PlayerController : MonoBehaviour
                 audioSource.Play();
                 // TODO animation
             }
+            else
+                unavailableAction.Play();
         }
         else if (MatchManager.Instance.Phase == MatchPhase.Countdown)
+        {
+            tooEarlyBuzzer.Play();
             GetHit();
+        }
     }
 
     public bool CanReload()
@@ -139,9 +153,14 @@ public class PlayerController : MonoBehaviour
                 audioSource.Play();
                 // TODO animation
             }
+            else
+                unavailableAction.Play();
         }
         else if (MatchManager.Instance.Phase == MatchPhase.Countdown)
+        {
+            tooEarlyBuzzer.Play();
             GetHit();
+        }
     }
 
     public bool CanDodge()
@@ -152,7 +171,7 @@ public class PlayerController : MonoBehaviour
     public void GetHit()
     {
         --lives;
-        audioSource.clip = getHitSFX.Poll(); // TODO if this is coming from pressing before Go!, play buzzer sfx instead
+        audioSource.clip = getHitSFX.Poll();
         audioSource.Play();
         // TODO animation
 
@@ -184,6 +203,9 @@ public class PlayerController : MonoBehaviour
 
     public void StartCountdownPhase()
     {
+        if (chosenAction == PlayerAction.Shoot)
+            unavailableAction.Play();
+
         chosenAction = PlayerAction.None;
 
         if (dodgeCooldown > 0)
