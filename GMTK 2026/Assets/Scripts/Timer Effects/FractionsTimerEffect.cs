@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class FractionsTimerEffect : TimerEffect
 {
-    // TODO instead of always going 1, 1/2, 1/3, 1/4, Go!... randomly select which fraction to actually end with
+    // TODO instead of always going 1, 1/2, 1/3, 1/4, Go!... randomly select which fraction to actually end with?
 
     public override void Activate()
     {
