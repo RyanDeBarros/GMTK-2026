@@ -3,11 +3,16 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+    private void Start()
+    {
+        Soundtrack.Play(Song.MainMenu);
+    }
+
     public void PlayGame()
     {
         SceneManager.LoadScene("Game");
-        Soundtrack.Play(Song.MainMenu);
     }
+
     public void QuitGame()
     {
         Application.Quit();
